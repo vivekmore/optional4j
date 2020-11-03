@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ioptional</artifactId>
+        <groupId>com.petra.ioptional</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ioptional-codegen</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.petra.ioptional</groupId>
+            <artifactId>ioptional-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.petra.ioptional</groupId>
+            <artifactId>ioptional-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

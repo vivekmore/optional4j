@@ -1,0 +1,6 @@
+# Project exclude paths
+/ioptional-annotations/target/
+/ioptional-codegen/target/
+/ioptional-lang/target/
+/ioptional-test-generated-model/target/
+/ioptional-test-model/target/

@@ -5,3 +5,4 @@
 /ioptional-test-generated-model/target/
 /ioptional-test-model/target/
 .idea/*
+*.iml

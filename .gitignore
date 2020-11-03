@@ -4,3 +4,4 @@
 /ioptional-lang/target/
 /ioptional-test-generated-model/target/
 /ioptional-test-model/target/
+.idea/*

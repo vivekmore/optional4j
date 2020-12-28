@@ -30,6 +30,12 @@ public class ClassConverter {
 	private final GetterConverter getterConverter = new GetterConverter();
 
 	@Delegate
+	private final OptionalGetterConverter optionalGetterConverter = new OptionalGetterConverter();
+
+	@Delegate
+	private final PlainGetterConverter plainGetterConverter = new PlainGetterConverter();
+
+	@Delegate
 	private final FieldConverter fieldConverter = new FieldConverter();
 
 	@Delegate
@@ -78,6 +84,26 @@ public class ClassConverter {
 			}
 		* */
 		addMethods(typeSpecBuilder, getterSpecs(classElement, codeGenContext));
+
+		/*
+		Getters:
+			public Optional<Country$> getCountryOptional() {
+				return Optional.ofNullable(country);
+			}
+		* */
+		if (codeGenContext.isGenerateOptionalGetters()) {
+			addMethods(typeSpecBuilder, optionalGetterSpecs(classElement, codeGenContext));
+		}
+
+		/*
+		Getters:
+			public Country$ getCountryPlain() {
+				return country;
+			}
+		* */
+		if (codeGenContext.isGeneratePlainGetters()) {
+			addMethods(typeSpecBuilder, plainGetterSpecs(classElement, codeGenContext));
+		}
 
 		/*
 		Setters:

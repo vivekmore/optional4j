@@ -27,6 +27,10 @@ public class CodeGenContext {
 
 	private final Set<TypeMirror> typeContext = new HashSet<>();
 
+	private final boolean generateOptionalGetters = true;
+
+	private final boolean generatePlainGetters = true;
+
 	@Delegate
 	private final ProcessingEnvironment processingEnvironment;
 

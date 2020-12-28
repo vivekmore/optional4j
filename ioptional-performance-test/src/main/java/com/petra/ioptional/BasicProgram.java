@@ -13,6 +13,7 @@ public class BasicProgram {
 
 	private static final Integer UNNAMED = 0;
 	private static final IsoCode$ ISO_CODE_$ = new IsoCode$();
+
 	static {
 		ISO_CODE_$.setCode(UNNAMED);
 	}
@@ -33,36 +34,36 @@ public class BasicProgram {
 			return UNNAMED;
 		}
 
-		if (order$.getCustomer()
-				.getAddress() == null) {
+		if (order$.getCustomerPlain()
+				.getAddress1Plain() == null) {
 			return UNNAMED;
 		}
 
-		if (order$.getCustomer()
-				.getAddress()
+		if (order$.getCustomerPlain()
+				.getAddress1Plain()
 				.getCountry() == null) {
 			return UNNAMED;
 		}
 
-		if (order$.getCustomer()
-				.getAddress()
-				.getCountry()
-				.getIsoCode$() == null) {
+		if (order$.getCustomerPlain()
+				.getAddress1Plain()
+				.getCountryPlain()
+				.getIsoCodePlain() == null) {
 			return UNNAMED;
 		}
 
-		if (order$.getCustomer()
-				.getAddress()
-				.getCountry()
-				.getIsoCode$()
+		if (order$.getCustomerPlain()
+				.getAddress1Plain()
+				.getCountryPlain()
+				.getIsoCodePlain()
 				.getCode() == null) {
 			return UNNAMED;
 		}
 
-		return order$.getCustomer()
-				.getAddress()
-				.getCountry()
-				.getIsoCode$()
+		return order$.getCustomerPlain()
+				.getAddress1Plain()
+				.getCountryPlain()
+				.getIsoCodePlain()
 				.getCode();
 	}
 
@@ -92,11 +93,11 @@ public class BasicProgram {
 	//	@Fork(FORK_VALUE)
 	public static Integer getUsingOptional(Optional<Order$> order$) {
 
-		return order$.flatMap(Order$::getOptionalCustomer)
-				.flatMap(Customer$::getOptionalAddress)
-				.flatMap(Address$::getOptionalCountry)
-				.flatMap(Country$::getOptionalIsoCode)
-				.flatMap(IsoCode$::getOptionalCode)
-				.orElse(UNNAMED);
+		return order$.flatMap(Order$::getCustomerOptional)
+				.flatMap(Customer$::getAddress1Optional)
+				.flatMap(Address$::getCountryOptional)
+				.flatMap(Country$::getIsoCodeOptional)
+				.orElse(ISO_CODE_$)
+				.getCode();
 	}
 }

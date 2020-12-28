@@ -8,14 +8,12 @@ public class AddressTest {
 	@Test
 	public void address() {
 
-//		Address addressOld = new Address();
-//		IsoCode oldIsoCode = addressOld.getCountry()
-//				.getIsoCode();
-
 		Address$ address = new Address$();
 
-		IOptional<IsoCode$> isoCode = address.getCountry()
+		Integer code = address.getCountry()
 				.orElse(new Country$())
-				.getIsoCode();
+				.getIsoCode()
+				.orElse(new IsoCode$())
+				.getCode();
 	}
 }

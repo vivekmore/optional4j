@@ -13,6 +13,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.TypeMirror;
 
+import java.util.Optional;
+
 import static com.petra.ioptional.codegen.util.ElementUtil.contains;
 import static com.petra.ioptional.codegen.util.ElementUtil.getParameterizedTypeName;
 
@@ -95,8 +97,23 @@ public class IOptionalUtil {
 	 * @param element
 	 * @return IOptional<T>
 	 */
+	public static ParameterizedTypeName getOptionalOfTypeName(Element element) {
+		return getOptionalOfTypeName(element.asType());
+	}
+
+	/**
+	 * @param element
+	 * @return IOptional<T>
+	 */
 	public static ParameterizedTypeName getIOptionalOfTypeName(ExecutableElement element) {
 		return getIOptionalOfTypeName(element.getReturnType());
+	}
+	/**
+	 * @param element
+	 * @return IOptional<T>
+	 */
+	public static ParameterizedTypeName getOptionalOfTypeName(ExecutableElement element) {
+		return getOptionalOfTypeName(element.getReturnType());
 	}
 
 	/**
@@ -105,6 +122,14 @@ public class IOptionalUtil {
 	 */
 	public static ParameterizedTypeName getIOptionalOfTypeName(TypeMirror typeMirror) {
 		return getParameterizedTypeName(IOptional.class, getValueClassQualifiedClassName(typeMirror));
+	}
+
+	/**
+	 * @param typeMirror
+	 * @return IOptional<T>
+	 */
+	public static ParameterizedTypeName getOptionalOfTypeName(TypeMirror typeMirror) {
+		return getParameterizedTypeName(Optional.class, getValueClassQualifiedClassName(typeMirror));
 	}
 
 	/**

@@ -12,18 +12,23 @@
     <modules>
         <module>ioptional-codegen</module>
         <module>ioptional-lang</module>
-        <module>ioptional-test-model</module>
+        <module>ioptional-functional-test</module>
         <module>ioptional-annotations</module>
-        <module>ioptional-test-generated-model</module>
+        <module>ioptional-performance-test</module>
     </modules>
 
     <properties>
         <auto-service.version>1.0-rc2</auto-service.version>
-        <javapoet.version>1.11.1</javapoet.version>
+        <javapoet.version>1.13.0</javapoet.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.11</version>
+            </dependency>
             <dependency>
                 <groupId>com.petra.ioptional</groupId>
                 <artifactId>ioptional-lang</artifactId>
@@ -40,6 +45,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.petra.ioptional</groupId>
+                <artifactId>ioptional-functional-test</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
                 <version>${auto-service.version}</version>
@@ -49,6 +59,12 @@
                 <groupId>com.squareup</groupId>
                 <artifactId>javapoet</artifactId>
                 <version>${javapoet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -68,6 +84,11 @@
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>1.21</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

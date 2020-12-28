@@ -4,7 +4,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class Empty<T> implements IOptional<T> {
+public final class Empty<T> implements IOptional<T> {
+
+	public static final Empty EMPTY = new Empty<>();
 
 	@Override
 	public final <R> R ifPresentOrElseGet(Function<? super T, R> ifPresent, Supplier<R> orElse) {
@@ -44,5 +46,15 @@ public abstract class Empty<T> implements IOptional<T> {
 	@Override
 	public final boolean isNull() {
 		return true;
+	}
+
+	@Override
+	public <R> IOptional<R> map(Function<? super T, R> ifPresent) {
+		return Empty.EMPTY;
+	}
+
+	@Override
+	public <R> IOptional<R> flatMap(Function<? super T, ? extends IOptional<? extends R>> mapper) {
+		return Empty.EMPTY;
 	}
 }

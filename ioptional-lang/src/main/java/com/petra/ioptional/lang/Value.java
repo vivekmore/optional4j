@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class Value<T> implements IOptional<T> {
+public class Value<T> implements IOptional<T> {
 
 	@Override
 	public final <R> R ifPresentOrElseGet(Function<? super T, R> ifPresent, Supplier<R> orElse) {
@@ -55,5 +55,7 @@ public abstract class Value<T> implements IOptional<T> {
 		return false;
 	}
 
-	public abstract T get();
+	public T get() {
+		return (T) this;
+	}
 }

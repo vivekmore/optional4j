@@ -8,7 +8,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
-import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,8 +17,11 @@ import static javax.tools.Diagnostic.Kind.WARNING;
 
 @RequiredArgsConstructor
 @Getter
-
 public class CodeGenContext {
+
+	private final Set<? extends Element> classElements;
+
+	private final Set<? extends TypeMirror> classTypes;
 
 	private final RoundEnvironment roundEnvironment;
 
@@ -50,10 +52,6 @@ public class CodeGenContext {
 
 	public void remove(TypeMirror typeMirror) {
 		typeContext.remove(typeMirror);
-	}
-
-	public Set<? extends Element> getElementsAnnotatedWithAny(Set<Class<? extends Annotation>> supportedAnnotations) {
-		return roundEnvironment.getElementsAnnotatedWithAny(supportedAnnotations);
 	}
 
 	public boolean has(TypeMirror typeMirror) {

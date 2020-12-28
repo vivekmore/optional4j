@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 public interface IOptional<T> {
 
 	static <T> IOptional<T> ofNullable(T value) {
-		return value == null ? EmptyImpl.EMPTY : new ValueImpl<>(value);
+		return value == null ? Empty.EMPTY : new ValueImpl<>(value);
 	}
 
 	static <T> IOptional<T> of(T value) {
@@ -17,7 +17,7 @@ public interface IOptional<T> {
 	}
 
 	static <T> IOptional<T> empty() {
-		return EmptyImpl.EMPTY;
+		return Empty.EMPTY;
 	}
 
 	<R> R ifPresentOrElseGet(Function<? super T, R> ifPresent, Supplier<R> orElse);

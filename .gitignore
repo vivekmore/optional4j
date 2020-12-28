@@ -1,8 +1,4 @@
 # Project exclude paths
-/ioptional-annotations/target/
-/ioptional-codegen/target/
-/ioptional-lang/target/
-/ioptional-test-generated-model/target/
-/ioptional-functional-test/target/
+*/target/
 .idea/*
 *.iml

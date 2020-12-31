@@ -5,7 +5,7 @@ import com.petra.ioptional.annotations.Optionalizable;
 import java.util.UUID;
 
 @Optionalizable
- class Order {
+ public class Order {
 
 	private UUID orderId;
 

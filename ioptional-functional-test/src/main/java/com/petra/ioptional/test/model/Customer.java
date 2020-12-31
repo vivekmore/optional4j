@@ -3,7 +3,7 @@ package com.petra.ioptional.test.model;
 import com.petra.ioptional.annotations.Optionalizable;
 
 @Optionalizable
- class Customer {
+ public class Customer {
 
 	private String firstName;
 

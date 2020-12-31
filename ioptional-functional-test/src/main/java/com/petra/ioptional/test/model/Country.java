@@ -3,7 +3,7 @@ package com.petra.ioptional.test.model;
 import com.petra.ioptional.annotations.Optionalizable;
 
 @Optionalizable
- class Country {
+ public class Country {
 
 	private IsoCode isoCode;
 

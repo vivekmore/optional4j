@@ -1,79 +1,106 @@
 package com.petra.ioptional;
 
 import com.petra.ioptional.lang.IOptional;
+import com.petra.ioptional.test.model.Address;
 import com.petra.ioptional.test.model.Address$;
+import com.petra.ioptional.test.model.Country;
 import com.petra.ioptional.test.model.Country$;
+import com.petra.ioptional.test.model.Customer;
 import com.petra.ioptional.test.model.Customer$;
+import com.petra.ioptional.test.model.IsoCode;
 import com.petra.ioptional.test.model.IsoCode$;
+import com.petra.ioptional.test.model.Order;
 import com.petra.ioptional.test.model.Order$;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
+import org.openjdk.jmh.annotations.Measurement;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.runner.RunnerException;
 
+import java.io.IOException;
 import java.util.Optional;
+
+import static com.petra.ioptional.Util.FORK_VALUE;
+import static com.petra.ioptional.Util.MEASUREMENT_ITERATIONS;
+import static com.petra.ioptional.Util.WARM_UP_ITERATIONS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static org.openjdk.jmh.annotations.Mode.AverageTime;
 
 public class BasicProgram {
 
-	private static final Integer UNNAMED = 0;
+	static final Order order = Util.newOrder();
+	static final IOptional<Order$> order$ = Util.newOrder$();
+	static final Optional<Order> optionalOrder$ = Optional.ofNullable(Util.newOrder());
+
+	private static final Integer DEFAULT_CODE = 0;
 	private static final IsoCode$ ISO_CODE_$ = new IsoCode$();
 
 	static {
-		ISO_CODE_$.setCode(UNNAMED);
+		ISO_CODE_$.setCode(DEFAULT_CODE);
 	}
 
-	//	@Benchmark
-	//	@BenchmarkMode(Mode.AverageTime)
-	//	@Warmup(iterations = WARM_UP_ITERATIONS)
-	//	@Measurement(iterations = MEASUREMENT_ITERATIONS)
-	//	@OutputTimeUnit(TimeUnit.NANOSECONDS)
-	//	@Fork(FORK_VALUE)
-	public static Integer getNameUsingIf(Order$ order$) {
+	public static void main(String[] args) throws IOException, RunnerException {
+		org.openjdk.jmh.Main.main(args);
+	}
 
-		if (order$ == null) {
-			return UNNAMED;
+	@Benchmark
+	@BenchmarkMode(AverageTime)
+	@Warmup(iterations = WARM_UP_ITERATIONS)
+	@Measurement(iterations = MEASUREMENT_ITERATIONS)
+	@OutputTimeUnit(NANOSECONDS)
+	@Fork(FORK_VALUE)
+	public static Integer getNameUsingIf() {
+
+		if (order == null) {
+			return DEFAULT_CODE;
 		}
 
-		if (order$.getCustomer() == null) {
-			return UNNAMED;
+		if (order.getCustomer() == null) {
+			return DEFAULT_CODE;
 		}
 
-		if (order$.getCustomerPlain()
-				.getAddress1Plain() == null) {
-			return UNNAMED;
+		if (order.getCustomer()
+				.getAddress1() == null) {
+			return DEFAULT_CODE;
 		}
 
-		if (order$.getCustomerPlain()
-				.getAddress1Plain()
+		if (order.getCustomer()
+				.getAddress1()
 				.getCountry() == null) {
-			return UNNAMED;
+			return DEFAULT_CODE;
 		}
 
-		if (order$.getCustomerPlain()
-				.getAddress1Plain()
-				.getCountryPlain()
-				.getIsoCodePlain() == null) {
-			return UNNAMED;
+		if (order.getCustomer()
+				.getAddress1()
+				.getCountry()
+				.getIsoCode() == null) {
+			return DEFAULT_CODE;
 		}
 
-		if (order$.getCustomerPlain()
-				.getAddress1Plain()
-				.getCountryPlain()
-				.getIsoCodePlain()
+		if (order.getCustomer()
+				.getAddress1()
+				.getCountry()
+				.getIsoCode()
 				.getCode() == null) {
-			return UNNAMED;
+			return DEFAULT_CODE;
 		}
 
-		return order$.getCustomerPlain()
-				.getAddress1Plain()
-				.getCountryPlain()
-				.getIsoCodePlain()
+		return order.getCustomer()
+				.getAddress1()
+				.getCountry()
+				.getIsoCode()
 				.getCode();
 	}
 
-	//	@Benchmark
-	//	@BenchmarkMode(Mode.AverageTime)
-	//	@Warmup(iterations = WARM_UP_ITERATIONS)
-	//	@Measurement(iterations = MEASUREMENT_ITERATIONS)
-	//	@OutputTimeUnit(TimeUnit.NANOSECONDS)
-	//	@Fork(FORK_VALUE)
-	public static Integer getUsingNullable(IOptional<Order$> order$) {
+	@Benchmark
+	@BenchmarkMode(AverageTime)
+	@Warmup(iterations = WARM_UP_ITERATIONS)
+	@Measurement(iterations = MEASUREMENT_ITERATIONS)
+	@OutputTimeUnit(NANOSECONDS)
+	@Fork(FORK_VALUE)
+	public static Integer getUsingIOptional() {
 
 		return order$.
 				flatMap(Order$::getCustomer)
@@ -85,19 +112,19 @@ public class BasicProgram {
 
 	}
 
-	//	@Benchmark
-	//	@BenchmarkMode(Mode.AverageTime)
-	//	@Warmup(iterations = WARM_UP_ITERATIONS)
-	//	@Measurement(iterations = MEASUREMENT_ITERATIONS)
-	//	@OutputTimeUnit(TimeUnit.NANOSECONDS)
-	//	@Fork(FORK_VALUE)
-	public static Integer getUsingOptional(Optional<Order$> order$) {
+	@Benchmark
+	@BenchmarkMode(AverageTime)
+	@Warmup(iterations = WARM_UP_ITERATIONS)
+	@Measurement(iterations = MEASUREMENT_ITERATIONS)
+	@OutputTimeUnit(NANOSECONDS)
+	@Fork(FORK_VALUE)
+	public static Integer getUsingOptional() {
 
-		return order$.flatMap(Order$::getCustomerOptional)
-				.flatMap(Customer$::getAddress1Optional)
-				.flatMap(Address$::getCountryOptional)
-				.flatMap(Country$::getIsoCodeOptional)
-				.orElse(ISO_CODE_$)
-				.getCode();
+		return optionalOrder$.map(Order::getCustomer)
+				.map(Customer::getAddress1)
+				.map(Address::getCountry)
+				.map(Country::getIsoCode)
+				.map(IsoCode::getCode)
+				.orElse(DEFAULT_CODE);
 	}
 }

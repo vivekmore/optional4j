@@ -3,7 +3,7 @@ package com.petra.ioptional.test.model;
 import com.petra.ioptional.annotations.Optionalizable;
 
 @Optionalizable
- class Address {
+ public class Address {
 
 	private Country country;
 

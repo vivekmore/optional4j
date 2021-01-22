@@ -1,0 +1,23 @@
+
+@startuml
+
+class Address{
+    street: String
+    zipcode: String
+    country: Country
+}
+class Country{
+    isoCode: IsoCode
+}
+class IsoCode{
+    code: String
+}
+class Customer{
+    firstName: String
+    lastName: String
+}
+
+Customer "1" o--> "2" Address
+Address "1" o--> "1" Country
+Country "1" o--> "1" IsoCode
+@enduml

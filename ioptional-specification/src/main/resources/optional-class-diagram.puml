@@ -1,0 +1,14 @@
+@startuml
+
+class Object
+
+class Foo
+
+class Optional{
+    <B>static Optional<T> ofNullable(T t)
+}
+Object <|-- Optional
+Object <|-- Foo
+Optional o--> Object
+
+@enduml

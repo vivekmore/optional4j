@@ -1,0 +1,19 @@
+@startuml
+
+class Client{
+}
+interface IOptional{
+    <B>static IOptional<T> ofNullable(T t)
+}
+abstract class Something
+class Nothing
+class Foo {
+    String getFirstName()
+    String getLastName()
+}
+
+IOptional <|-- Something
+IOptional <|-- Nothing
+Something <|-- Foo
+Client -> IOptional: ofNullable
+@enduml

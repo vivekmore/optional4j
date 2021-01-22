@@ -10,55 +10,28 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
-        <module>ioptional-codegen</module>
-        <module>ioptional-lang</module>
-        <module>ioptional-functional-test</module>
-        <module>ioptional-annotations</module>
-        <module>ioptional-performance-test</module>
+        <module>ioptional-specification</module>
+        <module>ioptional-test-functional</module>
+        <module>ioptional-test-performance</module>
     </modules>
 
     <properties>
         <auto-service.version>1.0-rc2</auto-service.version>
         <javapoet.version>1.13.0</javapoet.version>
+        <lombok.version>1.18.17</lombok.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.11</version>
-            </dependency>
-            <dependency>
                 <groupId>com.petra.ioptional</groupId>
-                <artifactId>ioptional-lang</artifactId>
+                <artifactId>ioptional-specification</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.petra.ioptional</groupId>
-                <artifactId>ioptional-annotations</artifactId>
+                <artifactId>ioptional-test-functional</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.petra.ioptional</groupId>
-                <artifactId>ioptional-codegen</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.petra.ioptional</groupId>
-                <artifactId>ioptional-functional-test</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.auto.service</groupId>
-                <artifactId>auto-service</artifactId>
-                <version>${auto-service.version}</version>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>com.squareup</groupId>
-                <artifactId>javapoet</artifactId>
-                <version>${javapoet.version}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -73,7 +46,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>

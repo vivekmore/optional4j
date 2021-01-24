@@ -1,10 +1,8 @@
-package ioptional.test.model;
+package poptional.test.model;
 
-import ioptional.OptionalReturn;
-import ioptional.OptionalType;
+import poptional.OptionalObject;
 
-@OptionalType
-@OptionalReturn
+@OptionalObject
 public class Address {
 
 	private Country country;

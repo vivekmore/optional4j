@@ -1,13 +1,11 @@
-package ioptional.test.model;
+package poptional.test.model;
 
-import ioptional.OptionalReturn;
-import ioptional.OptionalType;
+import poptional.OptionalObject;
 
 import java.util.UUID;
 
-@OptionalType
-@OptionalReturn
- public class Order {
+@OptionalObject
+public class Order {
 
 	private UUID orderId;
 

@@ -1,7 +1,7 @@
 @startuml
 
-interface IOptional{
-    <B>static IOptional<T> ofNullable(T t)
+interface Poptional{
+    <B>static Poptional<T> ofNullable(T t)
 }
 abstract class Something
 abstract class Nothing
@@ -19,13 +19,13 @@ class NullFoo {
     String getLastName()
 }
 
-IOptional <|-- Something
-IOptional <|-- Nothing
-IOptional <|-- FooNullObj
+Poptional <|-- Something
+Poptional <|-- Nothing
+Poptional <|-- FooNullObj
 FooNullObj <|-- Foo
 Something <|-- Foo
 FooNullObj <|-- NullFoo
 Nothing <|-- NullFoo
-Client -> IOptional: ofNullable
+Client -> Poptional: ofNullable
 Client -> FooNullObj: ofNullable
 @enduml

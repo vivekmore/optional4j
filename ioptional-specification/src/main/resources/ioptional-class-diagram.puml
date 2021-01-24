@@ -2,8 +2,8 @@
 
 class Client{
 }
-interface IOptional{
-    <B>static IOptional<T> ofNullable(T t)
+interface Poptional{
+    <B>static Poptional<T> ofNullable(T t)
 }
 abstract class Something
 class Nothing
@@ -12,8 +12,8 @@ class Foo {
     String getLastName()
 }
 
-IOptional <|-- Something
-IOptional <|-- Nothing
+Poptional <|-- Something
+Poptional <|-- Nothing
 Something <|-- Foo
-Client -> IOptional: ofNullable
+Client -> Poptional: ofNullable
 @enduml

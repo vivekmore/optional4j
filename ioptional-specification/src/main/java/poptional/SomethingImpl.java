@@ -1,4 +1,4 @@
-package ioptional;
+package poptional;
 
 public class SomethingImpl<T> implements Something<T> {
 

@@ -1,10 +1,10 @@
-package ioptional;
+package poptional;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public interface Something<T> extends IOptional<T> {
+public interface Something<T> extends Poptional<T> {
 
 	@Override
 	default boolean isEmpty() {
@@ -27,8 +27,8 @@ public interface Something<T> extends IOptional<T> {
 	}
 
 	@Override
-	default <R> ioptional.IOptional<R> flatMap(Function<? super T, ? extends ioptional.IOptional<? extends R>> mapper) {
-		return (ioptional.IOptional) mapper.apply(get());
+	default <R> Poptional<R> flatMap(Function<? super T, ? extends Poptional<? extends R>> mapper) {
+		return (Poptional) mapper.apply(get());
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public interface Something<T> extends IOptional<T> {
 	}
 
 	@Override
-	default ioptional.IOptional<T> or(Supplier<? extends ioptional.IOptional<? extends T>> supplier) {
+	default Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier) {
 		return this;
 	}
 

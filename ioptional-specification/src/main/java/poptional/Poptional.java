@@ -1,31 +1,31 @@
-package ioptional;
+package poptional;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static ioptional.Nothing.NOTHING;
+import static poptional.Nothing.NOTHING;
 
-public interface IOptional<T> {
+public interface Poptional<T> {
 
-	static <T> ioptional.IOptional<T> ofNullable(T value) {
+	static <T> Poptional<T> ofNullable(T value) {
 
 		if (value == null) {
 			return empty();
 		}
 
-		if (value instanceof ioptional.IOptional) {
-			return (ioptional.IOptional) value;
+		if (value instanceof Poptional) {
+			return (Poptional) value;
 		}
 
-		return new ioptional.SomethingImpl<>(value);
+		return new poptional.SomethingImpl<>(value);
 	}
 
-	static <T> ioptional.IOptional<T> ofNullable(ioptional.IOptional<T> value) {
+	static <T> Poptional<T> ofNullable(Poptional<T> value) {
 		return value == null ? empty() : value;
 	}
 
-	static <T> ioptional.IOptional<T> empty() {
+	static <T> Poptional<T> empty() {
 		return NOTHING;
 	}
 
@@ -47,9 +47,9 @@ public interface IOptional<T> {
 
 	void ifNull(Runnable ifNull);
 
-	<R> ioptional.IOptional<R> flatMap(Function<? super T, ? extends ioptional.IOptional<? extends R>> mapper);
+	<R> Poptional<R> flatMap(Function<? super T, ? extends Poptional<? extends R>> mapper);
 
-	ioptional.IOptional<T> or(Supplier<? extends ioptional.IOptional<? extends T>> supplier);
+	Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier);
 
 	T orElseThrow();
 

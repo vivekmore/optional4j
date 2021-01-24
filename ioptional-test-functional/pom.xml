@@ -18,6 +18,19 @@
         </dependency>
     </dependencies>
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <configuration>
+                        <excludes>
+                            <exclude>${project.basedir}/src/main/java</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>fr.inria.gforge.spoon</groupId>
@@ -37,8 +50,8 @@
                     <noClasspath>true</noClasspath>
                     <noCopyResources>true</noCopyResources>
                     <processors>
-                        <processor>ioptional.codegen.OptionalTypeAtp</processor>
-                        <processor>ioptional.codegen.OptionalReturnAtp</processor>
+                        <processor>poptional.codegen.OptionalObjectProcessor</processor>
+                        <processor>poptional.codegen.NullObjectProcessor</processor>
                     </processors>
                 </configuration>
             </plugin>

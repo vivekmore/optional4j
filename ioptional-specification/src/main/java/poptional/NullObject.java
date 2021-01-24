@@ -1,4 +1,4 @@
-package ioptional;
+package poptional;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -8,6 +8,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ TYPE })
 @Retention(RUNTIME)
-public @interface OptionalType {
+public @interface NullObject {
 
 }

@@ -1,11 +1,9 @@
-package ioptional.test.model;
+package poptional.test.model;
 
-import ioptional.OptionalReturn;
-import ioptional.OptionalType;
+import poptional.OptionalObject;
 
-@OptionalType
-@OptionalReturn
- public class Customer {
+@OptionalObject
+public class Customer {
 
 	private String firstName;
 

@@ -1,15 +1,15 @@
-package ioptional;
+package poptional;
 
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public interface Nothing<T> extends IOptional<T>{
+public interface Nothing<T> extends Poptional<T> {
 
-	ioptional.Nothing NOTHING = new ioptional.NothingImpl();
+	poptional.Nothing NOTHING = new poptional.NothingImpl();
 
-	static <T> ioptional.Nothing<T> empty(){
+	static <T> poptional.Nothing<T> empty(){
 		return NOTHING;
 	}
 
@@ -74,13 +74,13 @@ public interface Nothing<T> extends IOptional<T>{
 	}
 
 	@Override
-	default <R> ioptional.IOptional<R> flatMap(Function<? super T, ? extends ioptional.IOptional<? extends R>> mapper) {
+	default <R> Poptional<R> flatMap(Function<? super T, ? extends Poptional<? extends R>> mapper) {
 		return NOTHING;
 	}
 
 	@Override
-	default ioptional.IOptional<T> or(Supplier<? extends ioptional.IOptional<? extends T>> supplier) {
-		return (ioptional.IOptional) supplier.get();
+	default Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier) {
+		return (Poptional) supplier.get();
 	}
 
 	@Override

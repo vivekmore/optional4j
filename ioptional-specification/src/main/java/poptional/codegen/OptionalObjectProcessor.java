@@ -1,36 +1,40 @@
-package ioptional.codegen;
+package poptional.codegen;
 
-import ioptional.IOptional;
-import ioptional.OptionalReturn;
-import ioptional.OptionalType;
+import poptional.OptionalObject;
+import poptional.Poptional;
+import poptional.Something;
 import spoon.processing.AbstractAnnotationProcessor;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCodeSnippetStatement;
 import spoon.reflect.code.CtExpression;
 import spoon.reflect.code.CtReturn;
 import spoon.reflect.code.CtStatement;
-import spoon.reflect.declaration.CtAnnotation;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.reference.CtTypeReference;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionalReturnAtp extends AbstractAnnotationProcessor<OptionalReturn, CtElement> {
+public class OptionalObjectProcessor extends AbstractAnnotationProcessor<OptionalObject, CtElement> {
 
 	@Override
-	public void process(OptionalReturn optionalReturn, CtElement ctElement) {
+	public void process(OptionalObject optionalReturn, CtElement ctElement) {
 
 		if (ctElement instanceof CtMethod) {
 			doProcess((CtMethod) ctElement);
 		}
 
 		if (ctElement instanceof CtClass) {
+
 			CtClass ctClass = (CtClass) ctElement;
+			CtTypeReference<Something<?>> something = getFactory().createCtTypeReference(Something.class);
+			something.addActualTypeArgument(ctClass.getReference());
+			ctClass.addSuperInterface(something);
+
+			// todo: exclude methods which are either: 1- excluded or 2- specify a @NotNull annotation
 			ctClass.getMethods()
 					.forEach(ctMethod -> doProcess((CtMethod) ctMethod));
 		}
@@ -44,13 +48,13 @@ public class OptionalReturnAtp extends AbstractAnnotationProcessor<OptionalRetur
 
 		CtType<?> returnTypeDeclaration = returnType.getTypeDeclaration();
 
-		// todo: accept if it alternately implements IOptional .
+		// todo: accept if it alternately implements Poptional.
 
-		if (!returnTypeDeclaration.hasAnnotation(OptionalType.class)) {
+		if (!returnTypeDeclaration.hasAnnotation(OptionalObject.class)) {
 			return;
 		}
 
-		CtTypeReference<IOptional<?>> iOptional = getFactory().createCtTypeReference(IOptional.class);
+		CtTypeReference<Poptional<?>> iOptional = getFactory().createCtTypeReference(Poptional.class);
 		iOptional.addActualTypeArgument(returnType);
 		ctMethod.setType(iOptional);
 
@@ -65,7 +69,7 @@ public class OptionalReturnAtp extends AbstractAnnotationProcessor<OptionalRetur
 				CtReturn returnStatement = (CtReturn) statement;
 				CtExpression returnExpression = returnStatement.getReturnedExpression();
 				CtCodeSnippetStatement codeSnippetStatement = getFactory().createCodeSnippetStatement(
-						"return IOptional.ofNullable(" + returnExpression + ")");
+						"return Poptional.ofNullable(" + returnExpression + ")");
 				updatedStatements.add(codeSnippetStatement);
 			} else {
 				updatedStatements.add(statement);

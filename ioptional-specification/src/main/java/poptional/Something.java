@@ -80,5 +80,4 @@ public interface Something<T> extends Poptional<T> {
 	default T get() {
 		return (T) this;
 	}
-
 }

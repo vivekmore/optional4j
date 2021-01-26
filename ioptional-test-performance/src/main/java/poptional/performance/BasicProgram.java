@@ -26,8 +26,8 @@ import static org.openjdk.jmh.annotations.Mode.AverageTime;
 
 public class BasicProgram {
 
-	static final Order order = newOrder();
-	static final Poptional<Order> POPTIONAL_ORDER = Poptional.ofNullable(newOrder());
+	//static final Order order = newOrder();
+	static final Poptional<Order> poptionalOrder = newOrder();
 	static final Optional<Order> optionalOrder = Optional.ofNullable(newOrder());
 
 	private static final Integer DEFAULT_CODE = 0;
@@ -41,54 +41,40 @@ public class BasicProgram {
 		org.openjdk.jmh.Main.main(args);
 	}
 
-	@Benchmark
-	@BenchmarkMode(AverageTime)
-	@Warmup(iterations = WARM_UP_ITERATIONS)
-	@Measurement(iterations = MEASUREMENT_ITERATIONS)
-	@OutputTimeUnit(NANOSECONDS)
-	@Fork(FORK_VALUE)
-	public static Integer getNameUsingIf() {
-
-		if (order == null) {
-			return DEFAULT_CODE;
-		}
-
-		if (order.getCustomer() == null) {
-			return DEFAULT_CODE;
-		}
-
-		if (order.getCustomer()
-				.getAddress1() == null) {
-			return DEFAULT_CODE;
-		}
-
-		if (order.getCustomer()
-				.getAddress1()
-				.getCountry() == null) {
-			return DEFAULT_CODE;
-		}
-
-		if (order.getCustomer()
-				.getAddress1()
-				.getCountry()
-				.getIsoCode() == null) {
-			return DEFAULT_CODE;
-		}
-
-		if (order.getCustomer()
-				.getAddress1()
-				.getCountry()
-				.getIsoCode()
-				.getCode() == null) {
-			return DEFAULT_CODE;
-		}
-
-		return order.getCustomer()
-				.getAddress1()
-				.getCountry()
-				.getIsoCode()
-				.getCode();
-	}
+//	@Benchmark
+//	@BenchmarkMode(AverageTime)
+//	@Warmup(iterations = WARM_UP_ITERATIONS)
+//	@Measurement(iterations = MEASUREMENT_ITERATIONS)
+//	@OutputTimeUnit(NANOSECONDS)
+//	@Fork(FORK_VALUE)
+//	public static Integer getNameUsingIf() {
+//
+//		if (order == null) {
+//			return DEFAULT_CODE;
+//		}
+//
+//		if (order.customer == null) {
+//			return DEFAULT_CODE;
+//		}
+//
+//		if (order.customer.address1 == null) {
+//			return DEFAULT_CODE;
+//		}
+//
+//		if (order.customer.address1.country == null) {
+//			return DEFAULT_CODE;
+//		}
+//
+//		if (order.customer.address1.country.isoCode == null) {
+//			return DEFAULT_CODE;
+//		}
+//
+//		if (order.customer.address1.country.isoCode.code == null) {
+//			return DEFAULT_CODE;
+//		}
+//
+//		return order.customer.address1.country.isoCode.code;
+//	}
 
 	@Benchmark
 	@BenchmarkMode(AverageTime)
@@ -98,7 +84,7 @@ public class BasicProgram {
 	@Fork(FORK_VALUE)
 	public static Integer getUsingIOptional() {
 
-		return POPTIONAL_ORDER.flatMap(Order::getCustomer)
+		return poptionalOrder.flatMap(Order::getCustomer)
 				.flatMap(Customer::getAddress1)
 				.flatMap(Address::getCountry)
 				.flatMap(Country::getIsoCode)
@@ -113,7 +99,7 @@ public class BasicProgram {
 	@Measurement(iterations = MEASUREMENT_ITERATIONS)
 	@OutputTimeUnit(NANOSECONDS)
 	@Fork(FORK_VALUE)
-	public static Integer getUsingOptional_FlatMapVariation() {
+	public static Integer getUsingOptionalFlatMapVariation() {
 
 		return optionalOrder.flatMap(Order::getCustomerOptional)
 				.flatMap(Customer::getAddress1Optional)
@@ -129,12 +115,12 @@ public class BasicProgram {
 	@Measurement(iterations = MEASUREMENT_ITERATIONS)
 	@OutputTimeUnit(NANOSECONDS)
 	@Fork(FORK_VALUE)
-	public static Integer getUsingOptional_MapVariation() {
+	public static Integer getUsingOptionalMapVariation() {
 
-		return optionalOrder.map(Order::getCustomer)
-				.map(Customer::getAddress1)
-				.map(Address::getCountry)
-				.map(Country::getIsoCode)
+		return optionalOrder.map(Order::getCustomerPlain)
+				.map(Customer::getAddress1Plain)
+				.map(Address::getCountryPlain)
+				.map(Country::getIsoCodePlain)
 				.map(IsoCode::getCode)
 				.orElse(DEFAULT_CODE);
 	}

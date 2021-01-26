@@ -2,6 +2,8 @@ package poptional.test.model;
 
 import poptional.OptionalObject;
 
+import java.util.Optional;
+
 @OptionalObject
 public class Address {
 
@@ -15,6 +17,15 @@ public class Address {
 
 	public Country getCountry() {
 		return country;
+	}
+
+	@OptionalObject.NotNull
+	public Country getCountryPlain() {
+		return this.country;
+	}
+	
+	public Optional<Country> getCountryOptional() {
+		return Optional.ofNullable(country);
 	}
 
 	public void setCountry(Country country) {

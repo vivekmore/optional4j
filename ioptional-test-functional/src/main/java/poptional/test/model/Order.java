@@ -2,6 +2,7 @@ package poptional.test.model;
 
 import poptional.OptionalObject;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @OptionalObject
@@ -15,8 +16,17 @@ public class Order {
 		return this.orderId;
 	}
 
+	@OptionalObject.NotNull
+	public Customer getCustomerPlain() {
+		return this.customer;
+	}
+
 	public Customer getCustomer() {
 		return this.customer;
+	}
+
+	public Optional<Customer> getCustomerOptional() {
+		return Optional.ofNullable(this.customer);
 	}
 
 	public void setOrderId(UUID orderId) {

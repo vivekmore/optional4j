@@ -18,8 +18,6 @@ public class Util {
 	public static final int FORK_VALUE = 1;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
 
-
-
 	public static Order newOrder() {
 		Order order = new Order();
 		order.setOrderId(UUID.randomUUID());

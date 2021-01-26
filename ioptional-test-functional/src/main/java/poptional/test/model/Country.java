@@ -2,6 +2,8 @@ package poptional.test.model;
 
 import poptional.OptionalObject;
 
+import java.util.Optional;
+
 @OptionalObject
 public class Country {
 
@@ -9,6 +11,15 @@ public class Country {
 
 	public IsoCode getIsoCode() {
 		return this.isoCode;
+	}
+
+	@OptionalObject.NotNull
+	public IsoCode getIsoCodePlain() {
+		return this.isoCode;
+	}
+
+	public Optional<IsoCode> getIsoCodeOptional() {
+		return Optional.ofNullable(this.isoCode);
 	}
 
 	public void setIsoCode(IsoCode isoCode) {

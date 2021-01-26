@@ -2,6 +2,8 @@ package poptional.test.model;
 
 import poptional.OptionalObject;
 
+import java.util.Optional;
+
 @OptionalObject
 public class Node {
 
@@ -15,8 +17,16 @@ public class Node {
 		return this.left;
 	}
 
+	public Optional<Node> getLeftOptional() {
+		return Optional.ofNullable(this.left);
+	}
+
 	public Node getRight() {
 		return this.right;
+	}
+
+	public Optional<Node> getRightOptional() {
+		return Optional.ofNullable(this.right);
 	}
 
 	public int getValue() {

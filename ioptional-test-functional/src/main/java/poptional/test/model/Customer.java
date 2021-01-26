@@ -2,6 +2,8 @@ package poptional.test.model;
 
 import poptional.OptionalObject;
 
+import java.util.Optional;
+
 @OptionalObject
 public class Customer {
 
@@ -14,6 +16,16 @@ public class Customer {
 	private Address address1;
 
 	private Address address2;
+
+	@OptionalObject.NotNull
+	public Address getAddress1Plain() {
+		return this.address1;
+	}
+
+	@OptionalObject.NotNull
+	public Address getAddress2Plain() {
+		return this.address2;
+	}
 
 	public String getFirstName() {
 		return this.firstName;
@@ -31,8 +43,16 @@ public class Customer {
 		return this.address1;
 	}
 
+	public Optional<Address> getAddress1Optional() {
+		return Optional.ofNullable(this.address1);
+	}
+
 	public Address getAddress2() {
 		return this.address2;
+	}
+
+	public Optional<Address> getAddress2Optional() {
+		return Optional.ofNullable(this.address2);
 	}
 
 	public void setFirstName(String firstName) {

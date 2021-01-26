@@ -50,8 +50,8 @@
                     <noClasspath>true</noClasspath>
                     <noCopyResources>true</noCopyResources>
                     <processors>
-                        <processor>poptional.codegen.OptionalObjectProcessor</processor>
-                        <processor>poptional.codegen.NullObjectProcessor</processor>
+                        <processor>poptional.codegen.processor.OptionalObjectProcessor</processor>
+                        <processor>poptional.codegen.processor.NullObjectProcessor</processor>
                     </processors>
                 </configuration>
             </plugin>

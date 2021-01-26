@@ -3,7 +3,7 @@
 class Client{
 }
 interface Poptional{
-    <B>static Poptional<T> ofNullable(T t)
+    <B>static Poptional<T> ofNullable(Poptional<T> t)
 }
 abstract class Something
 class Nothing

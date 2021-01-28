@@ -2,16 +2,27 @@ package poptional.test.model;
 
 import poptional.OptionalObject;
 
+import java.util.Optional;
+
 @OptionalObject
 public class IsoCode {
 
-	private Integer code;
+	private Code code;
 
-	public Integer getCode() {
+	public Code getCode() {
 		return this.code;
 	}
 
-	public void setCode(Integer code) {
+	public Optional<Code> getCodeOptional() {
+		return Optional.ofNullable(this.code);
+	}
+
+	@OptionalObject.NotNull
+	public Code getCodePlain() {
+		return this.code;
+	}
+
+	public void setCode(Code code) {
 		this.code = code;
 	}
 }

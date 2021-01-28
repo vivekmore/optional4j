@@ -16,9 +16,7 @@
     </modules>
 
     <properties>
-        <auto-service.version>1.0-rc2</auto-service.version>
-        <javapoet.version>1.13.0</javapoet.version>
-        <lombok.version>1.18.17</lombok.version>
+        <lombok.version>1.18.16</lombok.version>
     </properties>
 
     <dependencyManagement>

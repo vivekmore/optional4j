@@ -17,6 +17,7 @@ class Customer{
     lastName: String
 }
 
+Order --> Customer
 Customer "1" o--> "2" Address
 Address "1" o--> "1" Country
 Country "1" o--> "1" IsoCode

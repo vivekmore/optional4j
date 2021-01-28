@@ -1,12 +1,15 @@
 package poptional.performance;
 
 import poptional.test.model.Address;
+import poptional.test.model.Code;
 import poptional.test.model.Country;
 import poptional.test.model.Customer;
 import poptional.test.model.IsoCode;
 import poptional.test.model.Order;
 import lombok.experimental.UtilityClass;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -17,6 +20,22 @@ public class Util {
 	public static final int MEASUREMENT_ITERATIONS = 2;
 	public static final int FORK_VALUE = 1;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
+
+	public static Order[] createOrders(int size) {
+		Order[] orders = new Order[size];
+		for (int i = 0; i < size; i++) {
+			orders[i] = newOrder();
+		}
+		return orders;
+	}
+
+	public static Map<Integer, Order> createOrdersMap(int size) {
+		Map<Integer, Order> orders = new HashMap<>();
+		for (int i = 0; i < size; i++) {
+			orders.put(i, newOrder());
+		}
+		return orders;
+	}
 
 	public static Order newOrder() {
 		Order order = new Order();
@@ -31,6 +50,7 @@ public class Util {
 		customer.setLastName("Amareen" + RANDOM.nextInt(99999));
 		customer.setPosition("One cool developer" + RANDOM.nextInt(99999));
 		customer.setAddress1(newAddress());
+		customer.setAddress2(newAddress());
 		return customer;
 	}
 
@@ -52,7 +72,13 @@ public class Util {
 
 	private static IsoCode newIsoCode() {
 		IsoCode isoCode = new IsoCode();
-		isoCode.setCode(RANDOM.nextInt(99999));
+		isoCode.setCode(newCode());
 		return isoCode;
+	}
+
+	private static Code newCode() {
+		Code code = new Code();
+		code.setCode(RANDOM.nextInt(99999));
+		return code;
 	}
 }

@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.petra.ioptional</groupId>
-    <artifactId>ioptional</artifactId>
+    <groupId>com.petra.poptional</groupId>
+    <artifactId>poptional</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
-        <module>ioptional-specification</module>
-        <module>ioptional-test-functional</module>
-        <module>ioptional-test-performance</module>
+        <module>poptional-specification</module>
+        <module>poptional-test-functional</module>
+        <module>poptional-test-performance</module>
     </modules>
 
     <properties>
@@ -22,13 +22,13 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.petra.ioptional</groupId>
-                <artifactId>ioptional-specification</artifactId>
+                <groupId>com.petra.poptional</groupId>
+                <artifactId>poptional-specification</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.petra.ioptional</groupId>
-                <artifactId>ioptional-test-functional</artifactId>
+                <groupId>com.petra.poptional</groupId>
+                <artifactId>poptional-test-functional</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -16,7 +16,7 @@ import java.util.UUID;
 @UtilityClass
 public class Util {
 
-	public static final int WARM_UP_ITERATIONS = 2;
+	public static final int WARM_UP_ITERATIONS = 1;
 	public static final int MEASUREMENT_ITERATIONS = 2;
 	public static final int FORK_VALUE = 1;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());

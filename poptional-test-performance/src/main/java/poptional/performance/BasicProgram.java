@@ -39,9 +39,8 @@ public class BasicProgram {
 	@Warmup(iterations = WARM_UP_ITERATIONS)
 	@Measurement(iterations = MEASUREMENT_ITERATIONS)
 	@OutputTimeUnit(NANOSECONDS)
-	@Fork(FORK_VALUE)
+	@Fork(value = FORK_VALUE)
 	public static void ifNull(Blackhole blackhole) {
-
 		for (Order order : orders) {
 			blackhole.consume(getCountry(order));
 		}

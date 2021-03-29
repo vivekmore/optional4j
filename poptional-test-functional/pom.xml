@@ -7,6 +7,15 @@
         <groupId>com.petra.poptional</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>business</module>
+        <module>presentation</module>
+        <module>model</module>
+    </modules>
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>poptional-test-functional</artifactId>
@@ -17,6 +26,27 @@
             <artifactId>poptional-specification</artifactId>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.petra.poptional</groupId>
+                <artifactId>model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.petra.poptional</groupId>
+                <artifactId>business</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.petra.poptional</groupId>
+                <artifactId>presentation</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <pluginManagement>
             <plugins>

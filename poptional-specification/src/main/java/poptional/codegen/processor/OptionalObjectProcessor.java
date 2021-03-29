@@ -11,7 +11,6 @@ import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
-import spoon.reflect.declaration.ModifierKind;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.CtAbstractVisitor;
 
@@ -30,6 +29,9 @@ public class OptionalObjectProcessor extends AbstractAnnotationProcessor<Optiona
 
 			@Override
 			public <T> void visitCtClass(CtClass<T> ctClass) {
+
+				getEnvironment().reportProgressMessage("\tProcessing class: " + ctClass.getSimpleName());
+
 				implementSomething(ctClass);
 				if (!ctClass.hasModifier(FINAL)) {
 					ctClass.addModifier(FINAL);
@@ -43,6 +45,8 @@ public class OptionalObjectProcessor extends AbstractAnnotationProcessor<Optiona
 
 			@Override
 			public <T> void visitCtMethod(CtMethod<T> ctMethod) {
+
+				getEnvironment().reportProgressMessage("\t\tProcessing method: " + ctMethod.getSimpleName());
 
 				// todo: Think about accepting if it alternately implements Poptional.
 				if (!getReturnType(ctMethod).hasAnnotation(OptionalObject.class)) {

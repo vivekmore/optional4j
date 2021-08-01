@@ -1,12 +1,12 @@
 package poptional.performance;
 
+import lombok.experimental.UtilityClass;
 import poptional.test.model.Address;
 import poptional.test.model.Code;
 import poptional.test.model.Country;
 import poptional.test.model.Customer;
 import poptional.test.model.IsoCode;
 import poptional.test.model.Order;
-import lombok.experimental.UtilityClass;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @UtilityClass
 public class Util {
 
-	public static final int WARM_UP_ITERATIONS = 1;
+	public static final int WARM_UP_ITERATIONS = 2;
 	public static final int MEASUREMENT_ITERATIONS = 2;
 	public static final int FORK_VALUE = 1;
 	public static final Random RANDOM = new Random(System.currentTimeMillis());
@@ -44,7 +44,7 @@ public class Util {
 		return order;
 	}
 
-	private static Customer newCustomer() {
+	public static Customer newCustomer() {
 		Customer customer = new Customer();
 		customer.setFirstName("Saleh" + RANDOM.nextInt(99999));
 		customer.setLastName("Amareen" + RANDOM.nextInt(99999));
@@ -54,7 +54,7 @@ public class Util {
 		return customer;
 	}
 
-	private static Address newAddress() {
+	public static Address newAddress() {
 		Address address = new Address();
 		address.setStreet(RANDOM.nextInt(99999) + " Barclay");
 		address.setCity("Ann Arbor" + RANDOM.nextInt());
@@ -63,20 +63,19 @@ public class Util {
 		return address;
 	}
 
-
-	private static Country newCountry() {
+	public static Country newCountry() {
 		Country country = new Country();
 		country.setIsoCode(newIsoCode());
 		return country;
 	}
 
-	private static IsoCode newIsoCode() {
+	public static IsoCode newIsoCode() {
 		IsoCode isoCode = new IsoCode();
 		isoCode.setCode(newCode());
 		return isoCode;
 	}
 
-	private static Code newCode() {
+	public static Code newCode() {
 		Code code = new Code();
 		code.setCode(RANDOM.nextInt(99999));
 		return code;

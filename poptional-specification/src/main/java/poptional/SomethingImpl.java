@@ -1,6 +1,6 @@
 package poptional;
 
-public class SomethingImpl<T> implements Something<T> {
+final class SomethingImpl<T extends Poptional<T>> extends Something<T> {
 
 	private final T value;
 

@@ -5,87 +5,91 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public interface Nothing<T> extends Poptional<T> {
+public final class Nothing<T extends Poptional<T>> implements Poptional<T> {
 
-	poptional.Nothing NOTHING = new poptional.NothingImpl();
+	private static final Nothing NOTHING = new Nothing();
 
-	static <T> poptional.Nothing<T> empty(){
+	static <T extends Poptional<T>> Poptional<T> empty(){
 		return NOTHING;
 	}
 
 	@Override
-	default boolean isEmpty() {
+	public final boolean isEmpty() {
 		return true;
 	}
 
 	@Override
-	default boolean isPresent() {
+	public final boolean isPresent() {
 		return false;
 	}
 
 	@Override
-	default <R> R ifPresentOrElseGet(Function<? super T, R> ifPresent, Supplier<R> orElse) {
+	public final <R> R ifPresentOrElseGet(Function<? super T, R> ifPresent, Supplier<R> orElse) {
 		return ifPresentOrElse(ifPresent, orElse.get());
 	}
 
 	@Override
-	default <R> R ifPresentOrElse(Function<? super T, R> ifPresent, R orElse) {
+	public final <R> R ifPresentOrElse(Function<? super T, R> ifPresent, R orElse) {
 		return orElse;
 	}
 
 	@Override
-	default T orElseGet(Supplier<T> orElse) {
+	public final T orElseGet(Supplier<T> orElse) {
 		return orElse.get();
 	}
 
 	@Override
-	default T orElse(T orElse) {
+	public final T orElse(T orElse) {
 		return orElse;
 	}
 
 	@Override
-	default void ifPresent(Consumer<T> ifNotNull) {
+	public final void ifPresent(Consumer<T> ifNotNull) {
 		// do nothing because this is the "null" implementation
 	}
 
 	@Override
-	default <R> R ifNullOrElse(Supplier<R> ifNull, Supplier<R> orElse) {
+	public final <R> R ifNullOrElse(Supplier<R> ifNull, Supplier<R> orElse) {
 		return ifNull.get();
 	}
 
 	@Override
-	default void ifNull(Runnable ifNull) {
+	public final void ifNull(Runnable ifNull) {
 		ifNull.run();
 	}
 
 	@Override
-	default boolean isNull() {
+	public final boolean isNull() {
 		return true;
 	}
 
 	@Override
-	default T orElseThrow() {
+	public final T orElseThrow() {
 		throw new NoSuchElementException("No value present");
 	}
 
 	@Override
-	default <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
+	public final <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
 		throw exceptionSupplier.get();
 	}
 
 	@Override
-	default <R> Poptional<R> flatMap(Function<? super T, ? extends Poptional<? extends R>> mapper) {
-		return NOTHING;
+	public final <R extends Poptional<R>> Poptional<R> flatMap(Function<? super T, ? extends Poptional<R>> mapper) {
+		return Poptional.empty();
 	}
 
 	@Override
-	default Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier) {
+	public final <U extends Poptional<U>> Poptional<U> map(Function<? super T, ? extends U> mapper) {
+		return Poptional.empty();
+	}
+
+	@Override
+	public final Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier) {
 		return (Poptional) supplier.get();
 	}
 
 	@Override
-	default T get(){
+	public final T get(){
 		throw new NoSuchElementException("No value present");
 	}
-
 }

@@ -47,12 +47,20 @@ public class Customer {
 		return Optional.ofNullable(this.address1);
 	}
 
+	public gopt.Goptional<Address> getAddress1GuavaOptional() {
+		return gopt.Goptional.fromNullable(address1);
+	}
+
 	public Address getAddress2() {
 		return this.address2;
 	}
 
 	public Optional<Address> getAddress2Optional() {
 		return Optional.ofNullable(this.address2);
+	}
+
+	public gopt.Goptional<Address> getAddress2GuavaOptional() {
+		return gopt.Goptional.fromNullable(address2);
 	}
 
 	public void setFirstName(String firstName) {

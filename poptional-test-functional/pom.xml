@@ -25,6 +25,10 @@
             <groupId>com.petra.poptional</groupId>
             <artifactId>poptional-specification</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.google.guava</groupId>-->
+<!--            <artifactId>guava</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 
     <dependencyManagement>
@@ -81,7 +85,7 @@
                     <noCopyResources>true</noCopyResources>
                     <processors>
                         <processor>poptional.codegen.processor.OptionalObjectProcessor</processor>
-                        <processor>poptional.codegen.processor.NullObjectProcessor</processor>
+<!--                        <processor>poptional.codegen.processor.NullObjectProcessor</processor>-->
                     </processors>
                 </configuration>
             </plugin>

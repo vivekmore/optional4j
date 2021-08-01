@@ -17,6 +17,10 @@ public class IsoCode {
 		return Optional.ofNullable(this.code);
 	}
 
+	public gopt.Goptional<Code> getCodeGuavaOptional() {
+		return gopt.Goptional.fromNullable(code);
+	}
+
 	@OptionalObject.NotNull
 	public Code getCodePlain() {
 		return this.code;

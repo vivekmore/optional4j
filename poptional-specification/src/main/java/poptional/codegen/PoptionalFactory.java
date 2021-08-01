@@ -15,7 +15,7 @@ public class PoptionalFactory {
 	private final Factory factory;
 
 	public void implementSomething(CtClass<?> ctClass) {
-		ctClass.addSuperInterface(createSomethingOf(ctClass));
+		ctClass.setSuperclass(createSomethingOf(ctClass));
 	}
 
 	public CtTypeReference<Something<?>> createSomethingOf(CtClass<?> ctClass) {

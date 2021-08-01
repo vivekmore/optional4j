@@ -4,80 +4,80 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public interface Something<T> extends Poptional<T> {
+public abstract class Something<T extends Poptional<T>> implements Poptional<T> {
 
 	@Override
-	default boolean isEmpty() {
+	public final boolean isEmpty() {
 		return false;
 	}
 
 	@Override
-	default boolean isPresent() {
+	public final boolean isPresent() {
 		return true;
 	}
 
 	@Override
-	default <R> R ifPresentOrElseGet(Function<? super T, R> ifPresent, Supplier<R> orElse) {
-		return ifPresent.apply(get());
+	public final <R> R ifPresentOrElseGet(Function<? super T, R> ifPresent, Supplier<R> orElse) {
+		return ifPresent.apply(this.get());
 	}
 
 	@Override
-	default <R> R ifPresentOrElse(Function<? super T, R> ifPresent, R orElse) {
-		return ifPresent.apply(get());
+	public final <R> R ifPresentOrElse(Function<? super T, R> ifPresent, R orElse) {
+		return ifPresent.apply(this.get());
 	}
 
 	@Override
-	default <R> Poptional<R> flatMap(Function<? super T, ? extends Poptional<? extends R>> mapper) {
-		return (Poptional) mapper.apply(get());
+	public final <R extends Poptional<R>> Poptional<R> flatMap(Function<? super T, ? extends Poptional<R>> mapper) {
+		return mapper.apply(this.get());
 	}
 
 	@Override
-	default T orElseThrow() {
-		return (T) this;
+	public final <U extends Poptional<U>> Poptional<U> map(Function<? super T, ? extends U> mapper) {
+		return mapper.apply(this.get());
 	}
 
 	@Override
-	default <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
-		return (T) this;
+	public final T orElseThrow() {
+		return this.get();
 	}
 
 	@Override
-	default T orElseGet(Supplier<T> orElse) {
-		return get();
+	public final <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X {
+		return this.get();
 	}
 
 	@Override
-	default T orElse(T orElse) {
-		return get();
+	public final T orElseGet(Supplier<T> orElse) {
+		return this.get();
 	}
 
 	@Override
-	default void ifPresent(Consumer<T> ifNotNull) {
-		ifNotNull.accept(get());
+	public final T orElse(T orElse) {
+		return this.get();
 	}
 
 	@Override
-	default <R> R ifNullOrElse(Supplier<R> ifNull, Supplier<R> orElse) {
+	public final void ifPresent(Consumer<T> ifNotNull) {
+		ifNotNull.accept(this.get());
+	}
+
+	@Override
+	public final <R> R ifNullOrElse(Supplier<R> ifNull, Supplier<R> orElse) {
 		return orElse.get();
 	}
 
 	@Override
-	default void ifNull(Runnable ifNull) {
+	public final void ifNull(Runnable ifNull) {
 		// do nothing because this is the "not null" implementation
 	}
 
 	@Override
-	default boolean isNull() {
+	public final boolean isNull() {
 		return false;
 	}
 
 	@Override
-	default Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier) {
+	public final Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier) {
 		return this;
-	}
-
-	@Override
-	default T get() {
-		return (T) this;
 	}
 }

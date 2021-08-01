@@ -22,6 +22,10 @@ public class Country {
 		return Optional.ofNullable(this.isoCode);
 	}
 
+	public gopt.Goptional<IsoCode> getIsoCodeGuavaOptional() {
+		return gopt.Goptional.fromNullable(isoCode);
+	}
+
 	public void setIsoCode(IsoCode isoCode) {
 		this.isoCode = isoCode;
 	}

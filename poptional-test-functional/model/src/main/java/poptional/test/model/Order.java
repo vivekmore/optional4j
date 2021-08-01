@@ -29,6 +29,10 @@ public class Order {
 		return Optional.ofNullable(this.customer);
 	}
 
+	public gopt.Goptional<Customer> getCustomerGuavaOptional() {
+		return gopt.Goptional.fromNullable(customer);
+	}
+
 	public void setOrderId(UUID orderId) {
 		this.orderId = orderId;
 	}

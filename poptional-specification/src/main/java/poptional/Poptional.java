@@ -4,29 +4,14 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static poptional.Nothing.NOTHING;
+public interface Poptional<T extends Poptional<T>> {
 
-public interface Poptional<T> {
-
-	static <T> Poptional<T> ofNullable(T value) {
-
-		if (value == null) {
-			return empty();
-		}
-
-		if (value instanceof Poptional) {
-			return (Poptional) value;
-		}
-
-		return new poptional.SomethingImpl<>(value);
-	}
-
-	static <T> Poptional<T> ofNullable(Poptional<T> value) {
+	static <T extends Poptional<T>> Poptional<T> ofNullable(T value) {
 		return value == null ? empty() : value;
 	}
 
-	static <T> Poptional<T> empty() {
-		return NOTHING;
+	static <T extends Poptional<T>> Poptional<T> empty() {
+		return Nothing.empty();
 	}
 
 	boolean isEmpty();
@@ -47,7 +32,9 @@ public interface Poptional<T> {
 
 	void ifNull(Runnable ifNull);
 
-	<R> Poptional<R> flatMap(Function<? super T, ? extends Poptional<? extends R>> mapper);
+	<R extends Poptional<R>> Poptional<R> flatMap(Function<? super T, ? extends Poptional<R>> mapper);
+
+	<U extends Poptional<U>> Poptional<U> map(Function<? super T, ? extends U> mapper);
 
 	Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier);
 

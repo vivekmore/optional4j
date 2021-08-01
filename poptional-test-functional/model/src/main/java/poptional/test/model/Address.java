@@ -28,6 +28,10 @@ public class Address {
 		return Optional.ofNullable(country);
 	}
 
+	public gopt.Goptional<Country> getCountryGuavaOptional() {
+		return gopt.Goptional.fromNullable(country);
+	}
+
 	public void setCountry(Country country) {
 		this.country = country;
 	}

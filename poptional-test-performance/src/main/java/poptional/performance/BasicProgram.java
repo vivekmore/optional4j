@@ -118,6 +118,7 @@ public class BasicProgram {
 		return blackhole;
 	}
 
+	//-gc true -bm AverageTime -f 2 -foe true -i 2 -t 6 -wf 1 -wi 2 -tu ns
 	//	@Benchmark
 	//	public static Blackhole optional_map(Blackhole blackhole) {
 	//

@@ -8,12 +8,13 @@ import java.util.UUID;
 @OptionalObject
 public class Order {
 
-	private UUID orderId;
-
 	private Customer customer;
 
-	public UUID getOrderId() {
-		return this.orderId;
+	public Order(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Order() {
 	}
 
 	@OptionalObject.NotNull
@@ -23,18 +24,6 @@ public class Order {
 
 	public Customer getCustomer() {
 		return this.customer;
-	}
-
-	public Optional<Customer> getCustomerOptional() {
-		return Optional.ofNullable(this.customer);
-	}
-
-	public gopt.Goptional<Customer> getCustomerGuavaOptional() {
-		return gopt.Goptional.fromNullable(customer);
-	}
-
-	public void setOrderId(UUID orderId) {
-		this.orderId = orderId;
 	}
 
 	public void setCustomer(Customer customer) {

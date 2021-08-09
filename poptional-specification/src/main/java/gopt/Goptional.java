@@ -20,7 +20,7 @@ public abstract class Goptional<T> implements Serializable {
 	}
 
 	public static <T> gopt.Goptional<T> fromNullable(T nullableReference) {
-		return (Goptional) (nullableReference == null ? absent() : new Present<>(nullableReference));
+		return nullableReference == null ? absent() : new Present<>(nullableReference);
 	}
 
 	public static <T> gopt.Goptional<T> fromJavaUtil(java.util.Optional<T> javaUtilOptional) {

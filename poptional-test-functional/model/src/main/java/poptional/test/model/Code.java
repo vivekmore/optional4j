@@ -7,6 +7,12 @@ public class Code {
 
 	private Integer code;
 
+	public Code(Integer code) {
+		this.code = code;
+	}
+	public Code() {
+	}
+
 	public Integer getCode() {
 		return this.code;
 	}

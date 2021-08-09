@@ -9,25 +9,24 @@ public class IsoCode {
 
 	private Code code;
 
+	public IsoCode(Code code) {
+		this.code = code;
+	}
+
+	public IsoCode() {
+	}
+
+	public void setCode(Code code) {
+		this.code = code;
+	}
+
 	public Code getCode() {
 		return this.code;
-	}
-
-	public Optional<Code> getCodeOptional() {
-		return Optional.ofNullable(this.code);
-	}
-
-	public gopt.Goptional<Code> getCodeGuavaOptional() {
-		return gopt.Goptional.fromNullable(code);
 	}
 
 	@OptionalObject.NotNull
 	public Code getCodePlain() {
 		return this.code;
-	}
-
-	public void setCode(Code code) {
-		this.code = code;
 	}
 }
 

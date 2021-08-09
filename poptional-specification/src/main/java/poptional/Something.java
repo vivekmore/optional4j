@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class Something<T extends Poptional<T>> implements Poptional<T> {
+public abstract class Something<T> extends Poptional<T> {
 
 	@Override
 	public final boolean isEmpty() {
@@ -32,8 +32,8 @@ public abstract class Something<T extends Poptional<T>> implements Poptional<T> 
 	}
 
 	@Override
-	public final <U extends Poptional<U>> Poptional<U> map(Function<? super T, ? extends U> mapper) {
-		return mapper.apply(this.get());
+	public final <U> Poptional<U> map(Function<? super T, ? extends U> mapper) {
+		return Poptional.ofNullable((Poptional<U>) mapper.apply(this.get()));
 	}
 
 	@Override
@@ -79,5 +79,10 @@ public abstract class Something<T extends Poptional<T>> implements Poptional<T> 
 	@Override
 	public final Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier) {
 		return this;
+	}
+
+	@Override
+	public T get() {
+		return (T) this;
 	}
 }

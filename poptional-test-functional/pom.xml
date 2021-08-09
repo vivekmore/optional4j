@@ -25,10 +25,6 @@
             <groupId>com.petra.poptional</groupId>
             <artifactId>poptional-specification</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.google.guava</groupId>-->
-<!--            <artifactId>guava</artifactId>-->
-<!--        </dependency>-->
     </dependencies>
 
     <dependencyManagement>

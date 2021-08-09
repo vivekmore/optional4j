@@ -42,7 +42,7 @@ public class OptionalObjectProcessor extends AbstractAnnotationProcessor<Optiona
 					ctClass.addModifier(FINAL);
 				}
 				visitCtMethods(ctClass.getMethods());
-				addGetMethod(ctClass);
+				//addGetMethod(ctClass);
 			}
 
 			private void visitCtMethods(Set<CtMethod<?>> methods) {
@@ -162,4 +162,3 @@ public class OptionalObjectProcessor extends AbstractAnnotationProcessor<Optiona
 				.getStatements();
 	}
 }
-

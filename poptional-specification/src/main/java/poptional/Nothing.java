@@ -5,11 +5,11 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public final class Nothing<T extends Poptional<T>> implements Poptional<T> {
+public final class Nothing<T> extends Poptional<T> {
 
 	private static final Nothing NOTHING = new Nothing();
 
-	static <T extends Poptional<T>> Poptional<T> empty(){
+	static <T> Poptional<T> emptyWithType(){
 		return NOTHING;
 	}
 
@@ -79,7 +79,7 @@ public final class Nothing<T extends Poptional<T>> implements Poptional<T> {
 	}
 
 	@Override
-	public final <U extends Poptional<U>> Poptional<U> map(Function<? super T, ? extends U> mapper) {
+	public final <U> Poptional<U> map(Function<? super T, ? extends U> mapper) {
 		return Poptional.empty();
 	}
 

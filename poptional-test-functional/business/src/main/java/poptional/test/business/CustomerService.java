@@ -7,6 +7,6 @@ import poptional.test.model.Customer;
 public class CustomerService {
 
 	public Customer getCustomer(String customerId) {
-		return new Customer();
+		return new Customer(null);
 	}
 }

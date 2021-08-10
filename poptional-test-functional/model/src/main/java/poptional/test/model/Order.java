@@ -2,9 +2,6 @@ package poptional.test.model;
 
 import poptional.OptionalObject;
 
-import java.util.Optional;
-import java.util.UUID;
-
 @OptionalObject
 public class Order {
 

@@ -1,51 +1,47 @@
 package poptional.performance;
 
-import poptional.Poptional;
 import poptional.test.model.*;
-
-import java.util.Optional;
-import java.util.Random;
 
 public class ModelUtil {
 
-    static final Order DEFAULT_ORDER = Util.newOrder(0);
-    static final Customer DEFAULT_CUSTOMER = Util.newCustomer(0);
-    static final Address DEFAULT_ADDRESS = Util.newAddress(0);
-    static final Country DEFAULT_COUNTRY = Util.newCountry(0);
-    static final IsoCode DEFAULT_ISO_CODE = Util.newIsoCode(0);
-    static final Code DEFAULT_CODE = new Code(new Random(System.currentTimeMillis()).nextInt());
+    static final Year YEAR_NOT_FOUND = new Year(0);
 
 
     public static Object getCodeIfElse(Order order) {
         if (order == null) {
-            return DEFAULT_CODE;
+            return YEAR_NOT_FOUND;
         }
 
         Customer customer = order.getCustomerPlain();
         if (customer == null) {
-            return DEFAULT_CODE;
+            return YEAR_NOT_FOUND;
         }
 
         Address address = customer.getAddressPlain();
         if (address == null) {
-            return DEFAULT_CODE;
+            return YEAR_NOT_FOUND;
         }
 
         Country country = address.getCountryPlain();
         if (country == null) {
-            return DEFAULT_CODE;
+            return YEAR_NOT_FOUND;
         }
 
         IsoCode isoCode = country.getIsoCodePlain();
         if (isoCode == null) {
-            return DEFAULT_CODE;
+            return YEAR_NOT_FOUND;
         }
 
-        Code code = isoCode.getCodePlain();
+        AlphaCode2 code = isoCode.getCodePlain();
         if (code == null) {
-            return DEFAULT_CODE;
+            return YEAR_NOT_FOUND;
         }
 
-        return code;
+        Year year = code.getYearPlain();
+        if (year == null) {
+            return YEAR_NOT_FOUND;
+        }
+
+        return year;
     }
 }

@@ -19,7 +19,7 @@ public final class Order extends Something<Order> {
     }
 
     public Poptional<Customer> getCustomer() {
-        return Poptional.ofNullable(this.customer);
+        return (this.customer) == null? poptional.Poptional.empty(): this.customer;
     }
 
     public void setCustomer(Customer customer) {

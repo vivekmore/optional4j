@@ -2,6 +2,7 @@ package gopt;
 
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -47,13 +48,8 @@ final class Present<T> extends gopt.Goptional<T> {
 	}
 
 	// changed
-	public <V> gopt.Goptional<V> transform(Function<? super T, V> function) {
-		V value = function.apply(this.reference);
-		if (value == null) {
-			return Absent.withType();
-		}
-		return new Present<>(value);
-		//return new Present<>(Objects.requireNonNull(function.apply(this.reference), "mapped value must not be null"));
+	public <V> gopt.Goptional<V> transform(Function<? super T, V>  mapper) {
+		return Goptional.fromNullable(mapper.apply(this.reference));
 	}
 
 	public boolean equals(Object object) {

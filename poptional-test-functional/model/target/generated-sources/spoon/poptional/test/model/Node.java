@@ -12,7 +12,7 @@ public final class Node extends Something<Node> {
     private int value;
 
     public Poptional<Node> getLeft() {
-        return Poptional.ofNullable(this.left);
+        return (this.left) == null? poptional.Poptional.empty(): this.left;
     }
 
     public Optional<Node> getLeftOptional() {
@@ -20,7 +20,7 @@ public final class Node extends Something<Node> {
     }
 
     public Poptional<Node> getRight() {
-        return Poptional.ofNullable(this.right);
+        return (this.right) == null? poptional.Poptional.empty(): this.right;
     }
 
     public Optional<Node> getRightOptional() {

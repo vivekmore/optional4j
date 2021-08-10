@@ -14,7 +14,7 @@ public final class Address extends Something<Address> {
     }
 
     public Poptional<Country> getCountry() {
-        return Poptional.ofNullable(country);
+        return (country) == null? poptional.Poptional.empty(): country;
     }
 
     public void setCountry(Country country) {

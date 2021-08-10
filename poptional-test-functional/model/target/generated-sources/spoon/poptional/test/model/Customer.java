@@ -14,7 +14,7 @@ public final class Customer extends Something<Customer> {
     }
 
     public Poptional<Address> getAddress() {
-        return Poptional.ofNullable(this.address);
+        return (this.address) == null? poptional.Poptional.empty(): this.address;
     }
 
     public void setAddress(Address address) {

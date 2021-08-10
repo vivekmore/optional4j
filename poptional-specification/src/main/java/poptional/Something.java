@@ -6,6 +6,9 @@ import java.util.function.Supplier;
 
 public abstract class Something<T> extends Poptional<T> {
 
+	protected Something() {
+	}
+
 	@Override
 	public final boolean isEmpty() {
 		return false;
@@ -82,7 +85,7 @@ public abstract class Something<T> extends Poptional<T> {
 	}
 
 	@Override
-	public T get() {
+	public final T get() {
 		return (T) this;
 	}
 }

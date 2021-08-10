@@ -6,44 +6,47 @@ import java.util.function.Supplier;
 
 public abstract class Poptional<T> {
 
-	public static <T> Poptional<T> ofNullable(Poptional<T> value) {
-		return value == null ? empty() : value;
-	}
+    public static <T> Poptional<T> ofNullable(Poptional<T> value) {
+        return value != null ? value : Nothing.nothing();
+    }
 
-	public static <T> Poptional<T> empty() {
-		return Nothing.emptyWithType();
-	}
+    public static <T> Poptional<T> empty(){
+        return Nothing.nothing();
+    }
 
-	public abstract boolean isEmpty();
+    Poptional() {
+    }
 
-	public abstract boolean isPresent();
+    public abstract boolean isEmpty();
 
-	public abstract <R> R ifPresentOrElse(Function<? super T, R> ifPresent, R orElse);
+    public abstract boolean isPresent();
 
-	public abstract void ifPresent(Consumer<T> ifPresent);
+    public abstract <R> R ifPresentOrElse(Function<? super T, R> ifPresent, R orElse);
 
-	public abstract <R> R ifPresentOrElseGet(Function<? super T, R> ifPresent, Supplier<R> orElse);
+    public abstract void ifPresent(Consumer<T> ifPresent);
 
-	public abstract T orElseGet(Supplier<T> orElse);
+    public abstract <R> R ifPresentOrElseGet(Function<? super T, R> ifPresent, Supplier<R> orElse);
 
-	public abstract T orElse(T orElse);
+    public abstract T orElseGet(Supplier<T> orElse);
 
-	public abstract <R> R ifNullOrElse(Supplier<R> ifNull, Supplier<R> orElse);
+    public abstract T orElse(T orElse);
 
-	public abstract void ifNull(Runnable ifNull);
+    public abstract <R> R ifNullOrElse(Supplier<R> ifNull, Supplier<R> orElse);
 
-	public abstract <R extends Poptional<R>> Poptional<R> flatMap(Function<? super T, ? extends Poptional<R>> mapper);
+    public abstract void ifNull(Runnable ifNull);
 
-	public abstract <U> Poptional<U> map(Function<? super T, ? extends U> mapper);
+    public abstract <R extends Poptional<R>> Poptional<R> flatMap(Function<? super T, ? extends Poptional<R>> mapper);
 
-	public abstract Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier);
+    public abstract <U> Poptional<U> map(Function<? super T, ? extends U> mapper);
 
-	public abstract T orElseThrow();
+    public abstract Poptional<T> or(Supplier<? extends Poptional<? extends T>> supplier);
 
-	public abstract <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X;
+    public abstract T orElseThrow();
 
-	public abstract boolean isNull();
+    public abstract <X extends Throwable> T orElseThrow(Supplier<? extends X> exceptionSupplier) throws X;
 
-	public abstract T get();
+    public abstract boolean isNull();
+
+    public abstract T get();
 
 }

@@ -7,9 +7,12 @@ import java.util.function.Supplier;
 
 public final class Nothing<T> extends Poptional<T> {
 
-	private static final Nothing NOTHING = new Nothing();
+	public static final Nothing NOTHING = new Nothing();
 
-	static <T> Poptional<T> emptyWithType(){
+	protected Nothing() {
+	}
+
+	static <T> Nothing<T> nothing(){
 		return NOTHING;
 	}
 
@@ -75,12 +78,12 @@ public final class Nothing<T> extends Poptional<T> {
 
 	@Override
 	public final <R extends Poptional<R>> Poptional<R> flatMap(Function<? super T, ? extends Poptional<R>> mapper) {
-		return Poptional.empty();
+		return (Poptional<R>) this;
 	}
 
 	@Override
 	public final <U> Poptional<U> map(Function<? super T, ? extends U> mapper) {
-		return Poptional.empty();
+		return (Poptional<U>) this;
 	}
 
 	@Override
@@ -91,5 +94,17 @@ public final class Nothing<T> extends Poptional<T> {
 	@Override
 	public final T get(){
 		throw new NoSuchElementException("No value present");
+	}
+
+	public final boolean equals(Object object) {
+		return object == this;
+	}
+
+	public final int hashCode() {
+		return 704073337;
+	}
+
+	public final String toString() {
+		return "poptional.Poptional.empty()";
 	}
 }

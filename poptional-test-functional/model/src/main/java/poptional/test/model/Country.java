@@ -2,8 +2,6 @@ package poptional.test.model;
 
 import poptional.OptionalObject;
 
-import java.util.Optional;
-
 @OptionalObject
 public class Country {
 

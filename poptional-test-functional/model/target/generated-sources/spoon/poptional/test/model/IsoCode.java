@@ -4,25 +4,25 @@ import poptional.Poptional;
 import poptional.Something;
 @OptionalObject
 public final class IsoCode extends Something<IsoCode> {
-    private Code code;
-
-    public IsoCode(Code code) {
-        this.code = code;
-    }
+    private AlphaCode2 alphaCode2;
 
     public IsoCode() {
     }
 
-    public void setCode(Code code) {
-        this.code = code;
+    public IsoCode(AlphaCode2 alphaCode2) {
+        this.alphaCode2 = alphaCode2;
     }
 
-    public Poptional<Code> getCode() {
-        return Poptional.ofNullable(this.code);
+    public void setAlphaCode2(AlphaCode2 alphaCode2) {
+        this.alphaCode2 = alphaCode2;
+    }
+
+    public Poptional<AlphaCode2> getAlphaCode2() {
+        return (this.alphaCode2) == null? poptional.Poptional.empty(): this.alphaCode2;
     }
 
     @OptionalObject.NotNull
-    public Code getCodePlain() {
-        return this.code;
+    public AlphaCode2 getCodePlain() {
+        return this.alphaCode2;
     }
 }

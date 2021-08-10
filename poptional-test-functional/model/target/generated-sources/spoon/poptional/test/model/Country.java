@@ -14,7 +14,7 @@ public final class Country extends Something<Country> {
     }
 
     public Poptional<IsoCode> getIsoCode() {
-        return Poptional.ofNullable(this.isoCode);
+        return (this.isoCode) == null? poptional.Poptional.empty(): this.isoCode;
     }
 
     public void setIsoCode(IsoCode isoCode) {

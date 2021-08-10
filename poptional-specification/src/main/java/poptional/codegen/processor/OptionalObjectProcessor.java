@@ -160,7 +160,7 @@ public class OptionalObjectProcessor extends AbstractAnnotationProcessor<Optiona
     }
 
     private String ifNullStatement3(CtReturn<?> returnStatement) {
-        return "return (" + returnStatement.getReturnedExpression() + ") == null? poptional.Poptional.empty(): " + returnStatement.getReturnedExpression();
+        return "return (" + returnStatement.getReturnedExpression() + ") == null? Poptional.empty(): " + returnStatement.getReturnedExpression();
     }
 
     private void setMethodStatements(CtMethod<?> ctMethod, List<CtStatement> statements) {

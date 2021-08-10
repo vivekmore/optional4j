@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public final class Nothing<T> extends Poptional<T> {
 
-	public static final Nothing NOTHING = new Nothing();
+	private static final Nothing NOTHING = new Nothing();
 
 	protected Nothing() {
 	}

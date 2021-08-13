@@ -1,10 +1,10 @@
 package poptional.test.model;
 
-import poptional.OptionalObject;
+import poptional.OptionalType;
 
 import java.util.Optional;
 
-@OptionalObject
+@OptionalType
 public class Node {
 
 	private Node left;

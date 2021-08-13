@@ -9,7 +9,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ TYPE, METHOD })
 @Retention(RUNTIME)
-public @interface OptionalObject {
+public @interface OptionalType {
 
 	/**
 	 * @return a prefix to add to the generated class name

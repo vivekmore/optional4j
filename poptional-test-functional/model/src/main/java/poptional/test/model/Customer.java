@@ -1,8 +1,10 @@
 package poptional.test.model;
 
-import poptional.OptionalObject;
+import poptional.OptionalType;
 
-@OptionalObject
+import javax.annotation.NonNull;
+
+@OptionalType
 public class Customer {
 
 	private Address address;
@@ -21,7 +23,7 @@ public class Customer {
 		this.address = address;
 	}
 
-	@OptionalObject.NotNull
+	@NonNull
 	public Address getAddressPlain() {
 		return this.address;
 	}

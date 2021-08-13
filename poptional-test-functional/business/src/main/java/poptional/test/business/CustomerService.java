@@ -1,12 +1,12 @@
 package poptional.test.business;
 
-import poptional.OptionalObject;
+import poptional.OptionalType;
 import poptional.test.model.Customer;
 
-@OptionalObject
 public class CustomerService {
 
+	@OptionalType
 	public Customer getCustomer(String customerId) {
-		return new Customer(null);
+		return new Customer();
 	}
 }

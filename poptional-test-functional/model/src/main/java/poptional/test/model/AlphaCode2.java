@@ -1,8 +1,10 @@
 package poptional.test.model;
 
-import poptional.OptionalObject;
+import poptional.OptionalType;
 
-@OptionalObject
+import javax.annotation.NonNull;
+
+@OptionalType
 public class AlphaCode2 {
 
 	private Year year;
@@ -18,7 +20,7 @@ public class AlphaCode2 {
 		return this.year;
 	}
 
-	@OptionalObject.NotNull
+	@NonNull
 	public Year getYearPlain() {
 		return this.year;
 	}

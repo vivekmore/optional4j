@@ -4,7 +4,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class Something<T> extends Poptional<T> {
+public abstract class Something<T> implements Poptional<T> {
 
 	protected Something() {
 	}

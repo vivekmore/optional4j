@@ -1,8 +1,10 @@
 package poptional.test.model;
 
-import poptional.OptionalObject;
+import poptional.OptionalType;
 
-@OptionalObject
+import javax.annotation.NonNull;
+
+@OptionalType
 public class IsoCode {
 
 	private AlphaCode2 alphaCode2;
@@ -22,7 +24,7 @@ public class IsoCode {
 		return this.alphaCode2;
 	}
 
-	@OptionalObject.NotNull
+	@NonNull
 	public AlphaCode2 getCodePlain() {
 		return this.alphaCode2;
 	}

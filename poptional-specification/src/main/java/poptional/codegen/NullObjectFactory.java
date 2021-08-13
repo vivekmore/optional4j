@@ -30,7 +30,7 @@ public class NullObjectFactory {
 	}
 
 	private CtInterface<?> declareNullObjectInterface(CtClass<?> ctClass) {
-		return getFactory().createInterface(ctClass.getPackage(), ctClass.getSimpleName() + "NullObject");
+		return getFactory().createInterface(ctClass.getPackage(), "Nullable" + ctClass.getSimpleName());
 	}
 
 	private void implementPoptionalSuperInterface(CtInterface<?> ctInterface, CtClass<?> ctClass) {

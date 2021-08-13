@@ -1,8 +1,10 @@
 package poptional.test.model;
 
-import poptional.OptionalObject;
+import poptional.OptionalType;
 
-@OptionalObject
+import javax.annotation.NonNull;
+
+@OptionalType
 public class Country {
 
 	private IsoCode isoCode;
@@ -22,7 +24,7 @@ public class Country {
 		this.isoCode = isoCode;
 	}
 
-	@OptionalObject.NotNull
+	@NonNull
 	public IsoCode getIsoCodePlain() {
 		return this.isoCode;
 	}

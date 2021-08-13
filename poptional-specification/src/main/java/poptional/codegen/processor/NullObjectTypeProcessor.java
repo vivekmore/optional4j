@@ -1,6 +1,6 @@
 package poptional.codegen.processor;
 
-import poptional.NullObject;
+import poptional.NullObjectType;
 import poptional.codegen.NullObjectFactory;
 import poptional.codegen.PoptionalFactory;
 import spoon.processing.AbstractAnnotationProcessor;
@@ -8,10 +8,10 @@ import spoon.processing.FileGenerator;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtInterface;
 
-public class NullObjectProcessor extends AbstractAnnotationProcessor<NullObject, CtClass> {
+public class NullObjectTypeProcessor extends AbstractAnnotationProcessor<NullObjectType, CtClass> {
 
 	@Override
-	public void process(NullObject nullObject, CtClass ctClass) {
+	public void process(NullObjectType nullObjectType, CtClass ctClass) {
 
 		CtInterface<?> nullObjectInterface = generateNullObjectInterface(ctClass);
 		implementNullObjectInterface(ctClass, nullObjectInterface);

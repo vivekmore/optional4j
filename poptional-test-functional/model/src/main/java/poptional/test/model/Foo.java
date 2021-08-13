@@ -1,8 +1,8 @@
 package poptional.test.model;
 
-import poptional.NullObject;
+import poptional.NullObjectType;
 
-@NullObject
+@NullObjectType
 public class Foo {
 
 	public String getName() {

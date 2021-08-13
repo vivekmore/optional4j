@@ -1,8 +1,8 @@
 package poptional.test.model;
 
-import poptional.OptionalObject;
+import poptional.OptionalType;
 
-@OptionalObject
+@OptionalType
 public class Year {
 
     private Integer value;

@@ -13,10 +13,14 @@
         <module>poptional-specification</module>
         <module>poptional-test-functional</module>
         <module>poptional-test-performance</module>
+        <module>jsr-305</module>
     </modules>
 
     <properties>
         <lombok.version>1.18.16</lombok.version>
+        <spoon.version>8.3.0</spoon.version>
+        <junit.version>4.13</junit.version>
+        <jmh.version>1.21</jmh.version>
     </properties>
 
     <dependencyManagement>
@@ -32,9 +36,19 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.petra.poptional</groupId>
+                <artifactId>jsr-305</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.inria.gforge.spoon</groupId>
+                <artifactId>spoon-core</artifactId>
+                <version>${spoon.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.13</version>
+                <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -49,12 +63,12 @@
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
-            <version>1.21</version>
+            <version>${jmh.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
-            <version>1.21</version>
+            <version>${jmh.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

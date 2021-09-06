@@ -9,7 +9,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jsr-305</artifactId>
+    <artifactId>popnop-codegen</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.petra.popnop</groupId>
+            <artifactId>popnop-spec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.inria.gforge.spoon</groupId>
+            <artifactId>spoon-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

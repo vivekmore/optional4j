@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.petra.popnop</groupId>
+        <artifactId>popnop</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>business</module>
+        <module>presentation</module>
+        <module>model</module>
+    </modules>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>popnop-functional-test</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.petra.popnop</groupId>
+            <artifactId>popnop-codegen</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.petra.popnop</groupId>
+                <artifactId>model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.petra.popnop</groupId>
+                <artifactId>business</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.petra.popnop</groupId>
+                <artifactId>presentation</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>fr.inria.gforge.spoon</groupId>
+                <artifactId>spoon-maven-plugin</artifactId>
+                <version>3.4.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputType>classes</outputType>
+                    <withImports>true</withImports>
+                    <processors>
+                        <processor>popnop.codegen.processor.OptionalTypeProcessor</processor>
+                        <processor>popnop.codegen.processor.NullObjectTypeProcessor</processor>
+                        <processor>popnop.codegen.processor.NullableProcessor</processor>
+                    </processors>
+<!--                    <processorProperties>-->
+<!--                        <processorProperty>-->
+<!--                            <name>popnop.codegen.processor.OptionalTypeProcessor</name>-->
+<!--                            <properties>-->
+<!--                                <property>-->
+<!--                                    <name>nullness</name>-->
+<!--                                    <value>Nullable</value>-->
+<!--                                </property>-->
+<!--                            </properties>-->
+<!--                        </processorProperty>-->
+<!--                    </processorProperties>-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

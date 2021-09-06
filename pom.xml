@@ -4,21 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.petra.poptional</groupId>
-    <artifactId>poptional</artifactId>
+    <groupId>com.petra.popnop</groupId>
+    <artifactId>popnop</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
-        <module>poptional-specification</module>
-        <module>poptional-test-functional</module>
-        <module>poptional-test-performance</module>
+        <module>popnop-spec</module>
+        <module>popnop-codegen</module>
+        <module>popnop-functional-test</module>
+        <module>popnop-performance-test</module>
         <module>jsr-305</module>
     </modules>
 
     <properties>
         <lombok.version>1.18.16</lombok.version>
-        <spoon.version>8.3.0</spoon.version>
+        <spoon.version>9.0.0</spoon.version>
         <junit.version>4.13</junit.version>
         <jmh.version>1.21</jmh.version>
     </properties>
@@ -26,17 +27,22 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.petra.poptional</groupId>
-                <artifactId>poptional-specification</artifactId>
+                <groupId>com.petra.popnop</groupId>
+                <artifactId>popnop-spec</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.petra.poptional</groupId>
-                <artifactId>poptional-test-functional</artifactId>
+                <groupId>com.petra.popnop</groupId>
+                <artifactId>popnop-codegen</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.petra.poptional</groupId>
+                <groupId>com.petra.popnop</groupId>
+                <artifactId>popnop-functional-test</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.petra.popnop</groupId>
                 <artifactId>jsr-305</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -84,8 +90,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <groupId>org.apache.maven.plugins</groupId>
                     <configuration>
-                        <source>15</source>
-                        <target>15</target>
+                        <source>12</source>
+                        <target>12</target>
                     </configuration>
                 </plugin>
             </plugins>

@@ -9,7 +9,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jsr-305</artifactId>
+    <artifactId>optional4j-codegen</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.petra.optional4j</groupId>
+            <artifactId>optional4j-spec</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.inria.gforge.spoon</groupId>
+            <artifactId>spoon-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

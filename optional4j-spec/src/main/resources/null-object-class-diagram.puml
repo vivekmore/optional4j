@@ -1,0 +1,31 @@
+@startuml
+
+interface Optional{
+    <B>static Optional<T> ofNullable(T t)
+}
+abstract class Something
+abstract class Nothing
+interface FooNullObj{
+    <B>static FooNullObj ofNullable(Foo foo)
+    String getFirstName()
+    String getLastName()
+}
+class Foo {
+    String getFirstName()
+        String getLastName()
+}
+class NullFoo {
+    String getFirstName()
+    String getLastName()
+}
+
+Optional <|-- Something
+Optional <|-- Nothing
+Optional <|-- FooNullObj
+FooNullObj <|-- Foo
+Something <|-- Foo
+FooNullObj <|-- NullFoo
+Nothing <|-- NullFoo
+Client -> Optional: ofNullable
+Client -> FooNullObj: ofNullable
+@enduml

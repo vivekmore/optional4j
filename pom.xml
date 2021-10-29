@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.petra.popnop</groupId>
-    <artifactId>popnop</artifactId>
+    <groupId>com.petra.optional4j</groupId>
+    <artifactId>optional4j</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
-        <module>popnop-spec</module>
-        <module>popnop-codegen</module>
-        <module>popnop-functional-test</module>
-        <module>popnop-performance-test</module>
+        <module>optional4j-spec</module>
+        <module>optional4j-codegen</module>
+        <module>optional4j-functional-test</module>
+        <module>optional4j-performance-test</module>
         <module>jsr-305</module>
     </modules>
 
@@ -27,22 +27,22 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.petra.popnop</groupId>
-                <artifactId>popnop-spec</artifactId>
+                <groupId>com.petra.optional4j</groupId>
+                <artifactId>optional4j-spec</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.petra.popnop</groupId>
-                <artifactId>popnop-codegen</artifactId>
+                <groupId>com.petra.optional4j</groupId>
+                <artifactId>optional4j-codegen</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.petra.popnop</groupId>
-                <artifactId>popnop-functional-test</artifactId>
+                <groupId>com.petra.optional4j</groupId>
+                <artifactId>optional4j-functional-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.petra.popnop</groupId>
+                <groupId>com.petra.optional4j</groupId>
                 <artifactId>jsr-305</artifactId>
                 <version>${project.version}</version>
             </dependency>

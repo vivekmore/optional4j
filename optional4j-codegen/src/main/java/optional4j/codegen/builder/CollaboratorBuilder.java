@@ -1,31 +1,28 @@
 package optional4j.codegen.builder;
 
+import static java.util.stream.Collectors.toSet;
+import static optional4j.annotation.Collaborator.NULL_INSTANCE_FACTORY_METHOD_NAME;
+import static optional4j.annotation.Collaborator.NULL_OBJECT_FACTORY_METHOD_NAME;
+import static spoon.reflect.declaration.ModifierKind.*;
+
+import java.util.Set;
+import javax.annotation.NonNull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
-import optional4j.spec.NullableObject;
 import optional4j.annotation.Collaborator;
+import optional4j.spec.NullableObject;
 import optional4j.spec.Optional;
 import spoon.reflect.code.CtFieldRead;
 import spoon.reflect.declaration.*;
 import spoon.reflect.factory.Factory;
 import spoon.reflect.reference.*;
 
-import javax.annotation.NonNull;
-import javax.annotation.Nullable;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
-import static optional4j.annotation.Collaborator.NULL_INSTANCE_FACTORY_METHOD_NAME;
-import static optional4j.annotation.Collaborator.NULL_OBJECT_FACTORY_METHOD_NAME;
-import static spoon.reflect.declaration.ModifierKind.*;
-
 @RequiredArgsConstructor
 public class CollaboratorBuilder {
 
-    @Getter
-    @Delegate
-    private final Factory factory;
+    @Getter @Delegate private final Factory factory;
 
     // interface FooNullObject extends Optional<Foo> {
     // ... Foo method declarations
@@ -34,7 +31,10 @@ public class CollaboratorBuilder {
 
         CtInterface<?> nullObjectType = declareNullObjectType(ctClass);
         nullObjectType.addSuperInterface(factory.createCtTypeReference(NullableObject.class));
-        nullObjectType.setModifiers(ctClass.getModifiers().stream().filter(modifier -> Set.of(PUBLIC, PRIVATE, PROTECTED).contains(modifier)).collect(toSet()));
+        nullObjectType.setModifiers(
+                ctClass.getModifiers().stream()
+                        .filter(modifier -> Set.of(PUBLIC, PRIVATE, PROTECTED).contains(modifier))
+                        .collect(toSet()));
         implementPoptional(nullObjectType, ctClass);
 
         return nullObjectType;
@@ -58,15 +58,22 @@ public class CollaboratorBuilder {
     // }
     public CtClass<?> createNullClass(CtClass<?> ctClass, CtType<?> nullObjectType) {
         CtClass nullClass = declareNullClass(ctClass);
-        nullClass.addField(getFactory().createCtField("NULL", nullClass.getReference(), "new " + nullClass.getSimpleName() + "()", STATIC, FINAL));
+        nullClass.addField(
+                getFactory()
+                        .createCtField(
+                                "NULL",
+                                nullClass.getReference(),
+                                "new " + nullClass.getSimpleName() + "()",
+                                STATIC,
+                                FINAL));
         implementsNullObjectInterface(nullClass, nullObjectType);
         return nullClass;
     }
 
     /**
-     * @param nullObjectType Generates method ==> @NonNull FooNullObject ofNullObject(@Nullable FooNullObject optional4j.nullObject) {
-     *                       return optional4j.nullObject != null? optional4j.nullObject: FooNull.nullInstance();
-     *                       }
+     * @param nullObjectType Generates method ==> @NonNull FooNullObject ofNullObject(@Nullable
+     *     FooNullObject optional4j.nullObject) { return optional4j.nullObject != null?
+     *     optional4j.nullObject: FooNull.nullInstance(); }
      */
     public void addOfNullObjectFactoryMethod(CtType<?> nullObjectType) {
 
@@ -86,17 +93,24 @@ public class CollaboratorBuilder {
 
         ofNullObjectMethod.addParameter(nullObject);
 
-        ofNullObjectMethod.setBody(createReturn().setReturnedExpression(createCodeSnippetExpression(nullObjectParamName + " != null? " + nullObjectParamName + ": " + NULL_INSTANCE_FACTORY_METHOD_NAME
-                + "()")));
+        ofNullObjectMethod.setBody(
+                createReturn()
+                        .setReturnedExpression(
+                                createCodeSnippetExpression(
+                                        nullObjectParamName
+                                                + " != null? "
+                                                + nullObjectParamName
+                                                + ": "
+                                                + NULL_INSTANCE_FACTORY_METHOD_NAME
+                                                + "()")));
 
         nullObjectType.addMethod(ofNullObjectMethod);
     }
 
     /**
      * @param nullObjectType
-     * @param ctClass        Generates method ==> @NonNull public static FooNullObject nullInstance() {
-     *                       return FooNull.NULL;
-     *                       }
+     * @param ctClass Generates method ==> @NonNull public static FooNullObject nullInstance() {
+     *     return FooNull.NULL; }
      */
     public void addNullInstanceFactoryMethod(CtType<?> nullObjectType, CtClass<?> ctClass) {
 
@@ -107,14 +121,19 @@ public class CollaboratorBuilder {
         nullInstanceMethod.setModifiers(Set.of(PUBLIC, STATIC));
         nullInstanceMethod.addAnnotation(createAnnotation(createCtTypeReference(NonNull.class)));
 
-
-        nullInstanceMethod.setBody(createReturn().setReturnedExpression(nullStaticInstanceAccess(ctClass)));
+        nullInstanceMethod.setBody(
+                createReturn().setReturnedExpression(nullStaticInstanceAccess(ctClass)));
 
         nullObjectType.addMethod(nullInstanceMethod);
     }
 
     private CtFieldRead nullStaticInstanceAccess(CtClass<?> ctClass) {
-        return createFieldRead().setVariable(createFieldReference().setDeclaringType(getNullClassReference(ctClass)).setStatic(true).setSimpleName("NULL"));
+        return createFieldRead()
+                .setVariable(
+                        createFieldReference()
+                                .setDeclaringType(getNullClassReference(ctClass))
+                                .setStatic(true)
+                                .setSimpleName("NULL"));
     }
 
     /**
@@ -145,7 +164,11 @@ public class CollaboratorBuilder {
      */
     private String getNullClassQualifiedName(CtClass<?> ctClass) {
         Collaborator nullObjectType = ctClass.getAnnotation(Collaborator.class);
-        return ctClass.getPackage().getQualifiedName() + "." + nullObjectType.nullPrefix() + ctClass.getSimpleName() + nullObjectType.nullPostfix();
+        return ctClass.getPackage().getQualifiedName()
+                + "."
+                + nullObjectType.nullPrefix()
+                + ctClass.getSimpleName()
+                + nullObjectType.nullPostfix();
     }
 
     /**
@@ -156,7 +179,11 @@ public class CollaboratorBuilder {
      */
     private String getNullObjectTypeQualifiedName(CtType<?> ctType) {
         Collaborator nullObjectType = ctType.getAnnotation(Collaborator.class);
-        return ctType.getPackage().getQualifiedName() + "." + nullObjectType.nullObjectPrefix() + ctType.getSimpleName() + nullObjectType.nullObjectPostfix();
+        return ctType.getPackage().getQualifiedName()
+                + "."
+                + nullObjectType.nullObjectPrefix()
+                + ctType.getSimpleName()
+                + nullObjectType.nullObjectPostfix();
     }
 
     private void implementsNullObjectInterface(CtClass<?> ctClass, CtType<?> nullObjectType) {

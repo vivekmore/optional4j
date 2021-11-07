@@ -6,63 +6,66 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-final class Absent<T> extends gopt.Goptional<T> {
+final class Absent<T> extends Goptional<T> {
 
-	static final Absent INSTANCE = new Absent();
-	private static final long serialVersionUID = 0L;
+    static final Absent INSTANCE = new Absent();
 
-	static <T> gopt.Goptional<T> withType() {
-		return INSTANCE;
-	}
+    private static final long serialVersionUID = 0L;
 
-	private Absent() {
-	}
+    static <T> Goptional<T> withType() {
+        return INSTANCE;
+    }
 
-	public boolean isPresent() {
-		return false;
-	}
+    private Absent() {}
 
-	public T get() {
-		throw new IllegalStateException("gopt.Goptional.get() cannot be called on an absent value");
-	}
+    public boolean isPresent() {
+        return false;
+    }
 
-	public T or(T defaultValue) {
-		return Objects.requireNonNull(defaultValue, "use gopt.Goptional.orNull() instead of gopt.Goptional.or(null)");
-	}
+    public T get() {
+        throw new IllegalStateException("gopt.Goptional.get() cannot be called on an absent value");
+    }
 
-	public gopt.Goptional<T> or(gopt.Goptional<? extends T> secondChoice) {
-		return (Goptional) Objects.requireNonNull(secondChoice);
-	}
+    public T or(T defaultValue) {
+        return Objects.requireNonNull(
+                defaultValue, "use gopt.Goptional.orNull() instead of gopt.Goptional.or(null)");
+    }
 
-	public T or(Supplier<? extends T> supplier) {
-		return Objects.requireNonNull(supplier.get(), "use gopt.Goptional.orNull() instead of a Supplier that returns null");
-	}
+    public Goptional<T> or(gopt.Goptional<? extends T> secondChoice) {
+        return (Goptional) Objects.requireNonNull(secondChoice);
+    }
 
-	public T orNull() {
-		return null;
-	}
+    public T or(Supplier<? extends T> supplier) {
+        return Objects.requireNonNull(
+                supplier.get(),
+                "use gopt.Goptional.orNull() instead of a Supplier that returns null");
+    }
 
-	public Set<T> asSet() {
-		return Collections.emptySet();
-	}
+    public T orNull() {
+        return null;
+    }
 
-	public <V> gopt.Goptional<V> transform(Function<? super T, V> function) {
-		return gopt.Goptional.absent();
-	}
+    public Set<T> asSet() {
+        return Collections.emptySet();
+    }
 
-	public boolean equals(Object object) {
-		return object == this;
-	}
+    public <V> gopt.Goptional<V> transform(Function<? super T, V> function) {
+        return gopt.Goptional.absent();
+    }
 
-	public int hashCode() {
-		return 2040732332;
-	}
+    public boolean equals(Object object) {
+        return object == this;
+    }
 
-	public String toString() {
-		return "gopt.Goptional.absent()";
-	}
+    public int hashCode() {
+        return 2040732332;
+    }
 
-	private Object readResolve() {
-		return INSTANCE;
-	}
+    public String toString() {
+        return "gopt.Goptional.absent()";
+    }
+
+    private Object readResolve() {
+        return INSTANCE;
+    }
 }

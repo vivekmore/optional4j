@@ -1,11 +1,10 @@
 package optional4j.codegen.processor;
 
+import javax.annotation.Nullable;
 import optional4j.codegen.builder.CollaboratorBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
 import optional4j.codegen.visitor.NullableVisitor;
 import spoon.reflect.declaration.CtElement;
-
-import javax.annotation.Nullable;
 
 public class NullableProcessor extends BaseAnnotationProcessor<Nullable, CtElement> {
 
@@ -14,6 +13,12 @@ public class NullableProcessor extends BaseAnnotationProcessor<Nullable, CtEleme
 
         getEnvironment().setAutoImports(true);
 
-        ctElement.accept(new NullableVisitor(this.getClass(), getEnvironment(), new CollaboratorBuilder(getFactory()), new ValueTypeBuilder(getFactory()), getProperties()));
+        ctElement.accept(
+                new NullableVisitor(
+                        this.getClass(),
+                        getEnvironment(),
+                        new CollaboratorBuilder(getFactory()),
+                        new ValueTypeBuilder(getFactory()),
+                        getProperties()));
     }
 }

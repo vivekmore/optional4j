@@ -1,9 +1,9 @@
 package optional4j.support;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.Arrays;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
 
 public enum ModeValue {
 
@@ -14,6 +14,8 @@ public enum ModeValue {
     OPTIMISTIC;
 
     public static Set<String> modeValues() {
-        return Arrays.stream(ModeValue.values()).map(value -> value.name().toLowerCase()).collect(toSet());
+        return Arrays.stream(ModeValue.values())
+                .map(value -> value.name().toLowerCase())
+                .collect(toSet());
     }
 }

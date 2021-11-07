@@ -1,10 +1,10 @@
 package optional4j.spec;
 
-import javax.annotation.NonNull;
-import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import javax.annotation.NonNull;
+import javax.annotation.Nullable;
 
 public interface Optional<T> {
 
@@ -14,7 +14,7 @@ public interface Optional<T> {
     }
 
     @NonNull
-    static <T> Optional<T> of(@NonNull  T value) {
+    static <T> Optional<T> of(@NonNull T value) {
         return value != null ? Present.of(value) : Absent.nothing();
     }
 
@@ -29,7 +29,7 @@ public interface Optional<T> {
     }
 
     @NonNull
-	java.util.Optional toJavaUtil();
+    java.util.Optional toJavaUtil();
 
     boolean isEmpty();
 
@@ -60,7 +60,7 @@ public interface Optional<T> {
     <U> Optional<U> map(Function<? super T, ? extends U> mapper);
 
     @NonNull
-	Optional<T> or(Supplier<? extends Optional<? extends T>> supplier);
+    Optional<T> or(Supplier<? extends Optional<? extends T>> supplier);
 
     @NonNull
     T orElseThrow();
@@ -71,5 +71,4 @@ public interface Optional<T> {
     boolean isNull();
 
     T get();
-
 }

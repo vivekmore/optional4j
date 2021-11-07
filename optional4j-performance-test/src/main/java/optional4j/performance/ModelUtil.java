@@ -1,5 +1,6 @@
 package optional4j.performance;
 
+import optional4j.test.model.*;
 import optional4j.test.model.Address;
 import optional4j.test.model.AlphaCode2;
 import optional4j.test.model.Country;
@@ -7,7 +8,6 @@ import optional4j.test.model.Customer;
 import optional4j.test.model.IsoCode;
 import optional4j.test.model.Order;
 import optional4j.test.model.Year;
-import optional4j.test.model.*;
 
 public class ModelUtil {
 

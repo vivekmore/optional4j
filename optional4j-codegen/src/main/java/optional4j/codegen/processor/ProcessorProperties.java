@@ -12,11 +12,9 @@ import optional4j.support.NullityValue;
 @ToString
 public class ProcessorProperties {
 
-    @NonNull
-    private final NullityValue nullity;
+    @NonNull private final NullityValue nullity;
 
-    @NonNull
-    private final ModeValue mode;
+    @NonNull private final ModeValue mode;
 
     private final boolean nullityEnabled;
 

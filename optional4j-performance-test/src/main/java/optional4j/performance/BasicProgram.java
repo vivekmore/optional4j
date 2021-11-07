@@ -43,10 +43,20 @@ public class BasicProgram {
                 order = new Order(new Customer(new Address(new Country(new IsoCode(null)))));
                 break;
             case "6":
-                order = new Order(new Customer(new Address(new Country(new IsoCode(new AlphaCode2(null))))));
+                order =
+                        new Order(
+                                new Customer(
+                                        new Address(
+                                                new Country(new IsoCode(new AlphaCode2(null))))));
                 break;
             case "7":
-                order = new Order(new Customer(new Address(new Country(new IsoCode(new AlphaCode2(new Year(null)))))));
+                order =
+                        new Order(
+                                new Customer(
+                                        new Address(
+                                                new Country(
+                                                        new IsoCode(
+                                                                new AlphaCode2(new Year(null)))))));
                 break;
             default:
                 throw new IllegalStateException("Unsupported filling.");
@@ -73,55 +83,55 @@ public class BasicProgram {
 
         Order order1 = null;
 
-        blackhole.consume(Optional.ofNullable(order)
-                .flatMap(Order::getCustomer)
-                .flatMap(Customer::getAddress)
-                .flatMap(Address::getCountry)
-                .flatMap(Country::getIsoCode)
-                .flatMap(IsoCode::getAlphaCode2)
-                .flatMap(AlphaCode2::getYear)
-                .orElse(ModelUtil.YEAR_NOT_FOUND)
-        );
+        blackhole.consume(
+                Optional.ofNullable(order)
+                        .flatMap(Order::getCustomer)
+                        .flatMap(Customer::getAddress)
+                        .flatMap(Address::getCountry)
+                        .flatMap(Country::getIsoCode)
+                        .flatMap(IsoCode::getAlphaCode2)
+                        .flatMap(AlphaCode2::getYear)
+                        .orElse(ModelUtil.YEAR_NOT_FOUND));
     }
 
     @Benchmark
     public void nullObject(Blackhole blackhole) {
 
-//        blackhole.consume(OrderNullObject.ofNullObject(order)
-//                .getCustomer()
-//                .getAddress()
-//                .getCountry()
-//                .getIsoCode()
-//                .getAlphaCode2()
-//                .getYear()
-//                .orElse(YEAR_NOT_FOUND));
+        //        blackhole.consume(OrderNullObject.ofNullObject(order)
+        //                .getCustomer()
+        //                .getAddress()
+        //                .getCountry()
+        //                .getIsoCode()
+        //                .getAlphaCode2()
+        //                .getYear()
+        //                .orElse(YEAR_NOT_FOUND));
     }
 
     @Benchmark
     public void java_optional(Blackhole blackhole) {
 
-        blackhole.consume(java.util.Optional.ofNullable(order)
-                .map(Order::getCustomerPlain)
-                .map(Customer::getAddressPlain)
-                .map(Address::getCountryPlain)
-                .map(Country::getIsoCodePlain)
-                .map(IsoCode::getCodePlain)
-                .map(AlphaCode2::getYearPlain)
-                .orElse(ModelUtil.YEAR_NOT_FOUND)
-        );
+        blackhole.consume(
+                java.util.Optional.ofNullable(order)
+                        .map(Order::getCustomerPlain)
+                        .map(Customer::getAddressPlain)
+                        .map(Address::getCountryPlain)
+                        .map(Country::getIsoCodePlain)
+                        .map(IsoCode::getCodePlain)
+                        .map(AlphaCode2::getYearPlain)
+                        .orElse(ModelUtil.YEAR_NOT_FOUND));
     }
 
     @Benchmark
     public void guava_optional(Blackhole blackhole) {
 
-        blackhole.consume(Goptional.fromNullable(order)
-                .transform(Order::getCustomerPlain)
-                .transform(Customer::getAddressPlain)
-                .transform(Address::getCountryPlain)
-                .transform(Country::getIsoCodePlain)
-                .transform(IsoCode::getCodePlain)
-                .transform(AlphaCode2::getYearPlain)
-                .or(ModelUtil.YEAR_NOT_FOUND)
-        );
+        blackhole.consume(
+                Goptional.fromNullable(order)
+                        .transform(Order::getCustomerPlain)
+                        .transform(Customer::getAddressPlain)
+                        .transform(Address::getCountryPlain)
+                        .transform(Country::getIsoCodePlain)
+                        .transform(IsoCode::getCodePlain)
+                        .transform(AlphaCode2::getYearPlain)
+                        .or(ModelUtil.YEAR_NOT_FOUND));
     }
 }

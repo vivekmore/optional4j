@@ -5,3 +5,5 @@
 *.iml
 *.png
 /poptional-diagrams/
+/optional4j-functional-test/model/target/
+/optional4j-functional-test/model/target/*

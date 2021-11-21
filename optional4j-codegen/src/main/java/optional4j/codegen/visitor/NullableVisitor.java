@@ -8,9 +8,11 @@ import static optional4j.support.ModeValue.PESSIMISTIC;
 
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import optional4j.codegen.builder.CollaboratorBuilder;
+import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
 import optional4j.codegen.processor.ProcessorProperties;
+import optional4j.codegen.visitor.nullobject.CollaboratorVisitor;
+import optional4j.codegen.visitor.valuetype.ValueTypeVisitor;
 import spoon.compiler.Environment;
 import spoon.processing.AnnotationProcessor;
 import spoon.reflect.declaration.CtClass;
@@ -24,7 +26,7 @@ public class NullableVisitor extends CtAbstractVisitor {
 
     private final Environment environment;
 
-    private final CollaboratorBuilder collaboratorBuilder;
+    private final NullObjectBuilder nullObjectBuilder;
 
     private final ValueTypeBuilder valueTypeBuilder;
 
@@ -57,7 +59,7 @@ public class NullableVisitor extends CtAbstractVisitor {
                     new CollaboratorVisitor(
                             processorClass,
                             environment,
-                            collaboratorBuilder,
+                            nullObjectBuilder,
                             valueTypeBuilder,
                             processorProperties));
             return;

@@ -2,6 +2,7 @@ package optional4j.annotation;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static optional4j.support.ModeValue.OPTIMISTIC;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -17,5 +18,5 @@ public @interface ValueType {
     /** @return a suffix to add to the generated class name */
     String suffix() default "";
 
-    ModeValue mode() default ModeValue.OPTIMISTIC;
+    ModeValue mode() default OPTIMISTIC;
 }

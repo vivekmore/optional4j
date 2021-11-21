@@ -18,7 +18,7 @@ public @interface Collaborator {
 
     String NULL_INSTANCE_FACTORY_METHOD_NAME = "nullInstance";
 
-    String NULL_OBJ_INTERFACE_PREFIX = "I";
+    String NULL_OBJ_INTERFACE_PREFIX = "Abstract";
 
     String NULL_OBJ_INTERFACE_POSTFIX = "";
 

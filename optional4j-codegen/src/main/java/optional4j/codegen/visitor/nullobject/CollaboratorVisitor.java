@@ -1,17 +1,9 @@
-package optional4j.codegen.visitor;
+package optional4j.codegen.visitor.nullobject;
 
 import static optional4j.annotation.Collaborator.NULL_OBJ_INTERFACE_POSTFIX;
 import static optional4j.annotation.Collaborator.NULL_OBJ_INTERFACE_PREFIX;
-import static optional4j.codegen.CodeGenUtil.addNonNullAnnotation;
-import static optional4j.codegen.CodeGenUtil.getNullableMethods;
-import static optional4j.codegen.CodeGenUtil.getNullness;
-import static optional4j.codegen.CodeGenUtil.getReturnType;
-import static optional4j.codegen.CodeGenUtil.hasNonNullAnnotation;
-import static optional4j.codegen.CodeGenUtil.isOptimisticMode;
-import static optional4j.codegen.CodeGenUtil.printProcessing;
+import static optional4j.codegen.CodeGenUtil.*;
 import static optional4j.codegen.CodeGenUtil.removeAnnotation;
-import static optional4j.codegen.CodeGenUtil.returnsNullObjectType;
-import static optional4j.codegen.CodeGenUtil.returnsOptionalType;
 import static optional4j.support.NullityValue.NULLABLE;
 
 import java.util.Collection;
@@ -22,9 +14,10 @@ import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import optional4j.annotation.Collaborator;
 import optional4j.codegen.CodeGenUtil;
-import optional4j.codegen.builder.CollaboratorBuilder;
+import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
 import optional4j.codegen.processor.ProcessorProperties;
+import optional4j.codegen.visitor.valuetype.ValueTypeVisitor;
 import optional4j.spec.Optional;
 import spoon.compiler.Environment;
 import spoon.processing.AnnotationProcessor;
@@ -48,7 +41,7 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
 
     private final Environment environment;
 
-    private final CollaboratorBuilder collaboratorBuilder;
+    private final NullObjectBuilder nullObjectBuilder;
 
     private final ValueTypeBuilder valueTypeBuilder;
 
@@ -78,15 +71,15 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
         visitJsr305Methods(ctClass);
 
         // Create NullObject interface
-        CtType<?> nullObjectType = collaboratorBuilder.createNullObjectType(ctClass);
-        collaboratorBuilder.addOfNullObjectFactoryMethod(nullObjectType);
-        collaboratorBuilder.addNullInstanceFactoryMethod(nullObjectType, ctClass);
+        CtType<?> nullObjectType = nullObjectBuilder.createNullObjectType(ctClass);
+        nullObjectBuilder.addOfNullObjectFactoryMethod(nullObjectType);
+        nullObjectBuilder.addNullInstanceFactoryMethod(nullObjectType, ctClass);
 
         // Elevate ctClass methods from (e.g., Foo) to NullObject interface (e.g., FooNullObject)
         elevateMethods(ctClass, nullObjectType);
 
         // Create Null Class
-        CtClass<?> nullClass = collaboratorBuilder.createNullClass(ctClass, nullObjectType);
+        CtClass<?> nullClass = nullObjectBuilder.createNullClass(ctClass, nullObjectType);
         implementNullInterfaceMethods(nullObjectType, nullClass);
         implementNothingInterface(nullClass, ctClass);
 
@@ -96,12 +89,11 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
         addOverrideAnnotationToMethods(ctClass);
 
         // Add Generated annotations
+        CodeGenUtil.addGeneratedAnnotation(ctClass, nullObjectBuilder.getFactory(), processorClass);
         CodeGenUtil.addGeneratedAnnotation(
-                ctClass, collaboratorBuilder.getFactory(), processorClass);
+                nullObjectType, nullObjectBuilder.getFactory(), processorClass);
         CodeGenUtil.addGeneratedAnnotation(
-                nullObjectType, collaboratorBuilder.getFactory(), processorClass);
-        CodeGenUtil.addGeneratedAnnotation(
-                nullClass, collaboratorBuilder.getFactory(), processorClass);
+                nullClass, nullObjectBuilder.getFactory(), processorClass);
 
         // Generate classes
         generateFile(nullClass);
@@ -151,14 +143,18 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
             }
         } else {
 
-            CtType<?> oldReturnType = getReturnType(ctMethod);
-            CtTypeReference<?> newReturnType =
-                    collaboratorBuilder.getNullObjectTypeReference(oldReturnType);
-            changeMethodReturnTypeToNullObject(ctMethod, newReturnType);
-            new NullObjectReturnReplacer(collaboratorBuilder, processorProperties)
-                    .replace(ctMethod, newReturnType.getSimpleName(), oldReturnType);
-            removeAnnotation(ctMethod, collaboratorBuilder.getFactory(), Nullable.class);
-            addNonNullAnnotation(ctMethod, collaboratorBuilder.getFactory());
+            removeAnnotation(ctMethod, nullObjectBuilder.getFactory(), Nullable.class);
+            removeAnnotation(ctMethod, nullObjectBuilder.getFactory(), Collaborator.class);
+
+            CtMethod<T> wrapperMethod =
+                    new NullObjectMethodWrapper(nullObjectBuilder, processorProperties)
+                            .wrapMethod(ctMethod);
+
+            CtType<?> declaringType = ctMethod.getDeclaringType();
+
+            declaringType.accept(this);
+
+            declaringType.addMethod(wrapperMethod);
         }
     }
 
@@ -188,13 +184,13 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
             parameterType.accept(this);
         }
 
-        CtLocalVariable newParameter = collaboratorBuilder.createLocalVariable();
+        CtLocalVariable newParameter = nullObjectBuilder.createLocalVariable();
         newParameter.setSimpleName(parameter.getSimpleName());
         newParameter.setType(parameterTypeRef);
 
         parameter.setSimpleName("temp_" + parameter.getSimpleName());
         newParameter.setAssignment(
-                collaboratorBuilder.createCodeSnippetExpression(parameter.getSimpleName()));
+                nullObjectBuilder.createCodeSnippetExpression(parameter.getSimpleName()));
 
         method.getBody().insertBegin(newParameter);
     }
@@ -216,7 +212,7 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
 
     private void declareInterfaceMethod(CtType<?> ctType, CtMethod<?> method) {
 
-        CtMethod<Object> newMethod = collaboratorBuilder.createMethod();
+        CtMethod<Object> newMethod = nullObjectBuilder.createMethod();
         CtTypeReference type = method.getType().clone();
         newMethod.setSimpleName(method.getSimpleName());
         newMethod.setModifiers(method.getModifiers());
@@ -231,17 +227,6 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
         ctClass.addSuperInterface(nullObjectType.getReference());
     }
 
-    /**
-     * Changes the method return type to FooNullObject
-     *
-     * @param ctMethod
-     * @param newReturnType
-     */
-    private void changeMethodReturnTypeToNullObject(
-            CtMethod ctMethod, CtTypeReference<?> newReturnType) {
-        ctMethod.setType(newReturnType);
-    }
-
     private <T> void addOverrideAnnotationToMethods(CtClass<T> ctClass) {
         ctClass.getMethods().stream()
                 .filter(CtModifiable::isPublic)
@@ -250,8 +235,8 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
                 .forEach(
                         ctMethod ->
                                 ctMethod.addAnnotation(
-                                        collaboratorBuilder.createAnnotation(
-                                                collaboratorBuilder.createCtTypeReference(
+                                        nullObjectBuilder.createAnnotation(
+                                                nullObjectBuilder.createCtTypeReference(
                                                         Override.class))));
     }
 
@@ -261,199 +246,192 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
                 .filter(ctMethod -> !ctMethod.isStatic())
                 .forEach(
                         ctMethod -> {
-                            CtBlock<?> block = collaboratorBuilder.createBlock();
+                            CtBlock<?> block = nullObjectBuilder.createBlock();
                             CtTypeReference type = ctMethod.getType();
 
-                            CtMethod<Object> newMethod = collaboratorBuilder.createMethod();
+                            CtMethod<Object> newMethod = nullObjectBuilder.createMethod();
                             newMethod.setSimpleName(ctMethod.getSimpleName());
                             newMethod.setParameters(ctMethod.getParameters());
                             newMethod.setModifiers(ctMethod.getModifiers());
                             newMethod.setType(type);
                             newMethod.addAnnotation(
-                                    collaboratorBuilder.createAnnotation(
-                                            collaboratorBuilder.createCtTypeReference(
+                                    nullObjectBuilder.createAnnotation(
+                                            nullObjectBuilder.createCtTypeReference(
                                                     Override.class)));
 
-                            if (type.equals(
-                                    collaboratorBuilder.createCtTypeReference(void.class))) {
+                            if (type.equals(nullObjectBuilder.createCtTypeReference(void.class))) {
                                 // do nothing
                             } else if (type.equals(
-                                    collaboratorBuilder.createCtTypeReference(Void.class))) {
+                                    nullObjectBuilder.createCtTypeReference(Void.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "null")));
                             } else if (type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
-                                                    Integer.class))
+                                            nullObjectBuilder.createCtTypeReference(Integer.class))
                                     || type.equals(
-                                            collaboratorBuilder.createCtTypeReference(int.class))) {
+                                            nullObjectBuilder.createCtTypeReference(int.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression("0")));
                             } else if (type.equals(
-                                            collaboratorBuilder.createCtTypeReference(Float.class))
+                                            nullObjectBuilder.createCtTypeReference(Float.class))
                                     || type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
-                                                    float.class))) {
+                                            nullObjectBuilder.createCtTypeReference(float.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "0.0f")));
                             } else if (type.equals(
-                                            collaboratorBuilder.createCtTypeReference(Double.class))
+                                            nullObjectBuilder.createCtTypeReference(Double.class))
                                     || type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
+                                            nullObjectBuilder.createCtTypeReference(
                                                     double.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "0.0d")));
                             } else if (type.equals(
-                                            collaboratorBuilder.createCtTypeReference(Long.class))
+                                            nullObjectBuilder.createCtTypeReference(Long.class))
                                     || type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
-                                                    long.class))) {
+                                            nullObjectBuilder.createCtTypeReference(long.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "0L")));
                             } else if (type.equals(
-                                            collaboratorBuilder.createCtTypeReference(Byte.class))
+                                            nullObjectBuilder.createCtTypeReference(Byte.class))
                                     || type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
-                                                    byte.class))) {
+                                            nullObjectBuilder.createCtTypeReference(byte.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression("0")));
                             } else if (type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
-                                                    Boolean.class))
+                                            nullObjectBuilder.createCtTypeReference(Boolean.class))
                                     || type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
+                                            nullObjectBuilder.createCtTypeReference(
                                                     boolean.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "false")));
                             } else if (type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
+                                            nullObjectBuilder.createCtTypeReference(
                                                     Character.class))
                                     || type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
-                                                    char.class))) {
+                                            nullObjectBuilder.createCtTypeReference(char.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "'\\u0000'")));
                             } else if (type.equals(
-                                            collaboratorBuilder.createCtTypeReference(Short.class))
+                                            nullObjectBuilder.createCtTypeReference(Short.class))
                                     || type.equals(
-                                            collaboratorBuilder.createCtTypeReference(
-                                                    short.class))) {
+                                            nullObjectBuilder.createCtTypeReference(short.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression("0")));
                             } else if (type.equals(
-                                    collaboratorBuilder.createCtTypeReference(String.class))) {
+                                    nullObjectBuilder.createCtTypeReference(String.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "\"\"")));
                             } else if (type.isSubtypeOf(
-                                    collaboratorBuilder.createCtTypeReference(Map.class))) {
+                                    nullObjectBuilder.createCtTypeReference(Map.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "java.util.Collections.emptyMap()")));
                             } else if (type.isSubtypeOf(
-                                    collaboratorBuilder.createCtTypeReference(Set.class))) {
+                                    nullObjectBuilder.createCtTypeReference(Set.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "java.util.Collections.emptySet()")));
                             } else if (type.isSubtypeOf(
-                                    collaboratorBuilder.createCtTypeReference(List.class))) {
+                                    nullObjectBuilder.createCtTypeReference(List.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "java.util.Collections.emptyList()")));
                             } else if (type.isSubtypeOf(
-                                    collaboratorBuilder.createCtTypeReference(Collection.class))) {
+                                    nullObjectBuilder.createCtTypeReference(Collection.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "java.util.Collections.emptyList()")));
                             } else if (type.isSubtypeOf(
-                                    collaboratorBuilder.createCtTypeReference(Iterable.class))) {
+                                    nullObjectBuilder.createCtTypeReference(Iterable.class))) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         "java.util.Collections.emptyList()")));
                             } else if (type.getQualifiedName()
                                     .startsWith(Optional.class.getName())) {
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         Optional.class
                                                                                         .getSimpleName()
                                                                                 + ".empty()")));
                             } else if (type.getSimpleName().startsWith(NULL_OBJ_INTERFACE_PREFIX)
-                                    && type.getSimpleName().endsWith(NULL_OBJ_INTERFACE_POSTFIX)) {
+                                    && type.getSimpleName().endsWith(NULL_OBJ_INTERFACE_POSTFIX)
+                                    && type.hasAnnotation(Collaborator.class)) {
                                 // todo: use an @NullObjectReturn annotation for method returns
                                 block.addStatement(
-                                        collaboratorBuilder
+                                        nullObjectBuilder
                                                 .createReturn()
                                                 .setReturnedExpression(
-                                                        collaboratorBuilder
+                                                        nullObjectBuilder
                                                                 .createCodeSnippetExpression(
                                                                         type.getSimpleName()
                                                                                 + "."
@@ -462,7 +440,7 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
                                                                                 + "()")));
                             } else {
                                 block.addStatement(
-                                        collaboratorBuilder.createCodeSnippetStatement(
+                                        nullObjectBuilder.createCodeSnippetStatement(
                                                 "return null"));
                             }
 

@@ -1,26 +1,27 @@
 package optional4j.support;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.Arrays;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toSet;
-
 public enum ModeValue {
 
-	/**
-	 * Apply null safety wherever possible. Not just to {@link optional4j.annotation.ValueType} annotated types
-	 */
-	PESSIMISTIC,
+    /**
+     * Apply null safety wherever possible. Not just to {@link optional4j.annotation.ValueType}
+     * annotated types
+     */
+    PESSIMISTIC,
 
-	/**
-	 * A performant mode which applies the null safety features only to {@link optional4j.annotation.ValueType} annotated types
-	 */
-	OPTIMISTIC;
+    /**
+     * A performant mode which applies the null safety features only to {@link
+     * optional4j.annotation.ValueType} annotated types
+     */
+    OPTIMISTIC;
 
-	public static Set<String> modeValues() {
-		return Arrays.stream(ModeValue.values())
-				.map(value -> value.name()
-						.toLowerCase())
-				.collect(toSet());
-	}
+    public static Set<String> modeValues() {
+        return Arrays.stream(ModeValue.values())
+                .map(value -> value.name().toLowerCase())
+                .collect(toSet());
+    }
 }

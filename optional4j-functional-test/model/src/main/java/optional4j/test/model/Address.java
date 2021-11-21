@@ -1,7 +1,6 @@
 package optional4j.test.model;
 
 import optional4j.annotation.Collaborator;
-import optional4j.annotation.OptionalReturn;
 import optional4j.annotation.ValueType;
 import optional4j.spec.Optional;
 
@@ -17,7 +16,7 @@ public class Address {
     }
 
     public void doSomething(Optional<Country> country) {
-        this.country.ifNull(
+        country.ifNull(
                 new Runnable() {
 
                     @Override
@@ -29,7 +28,7 @@ public class Address {
 
     public Address() {}
 
-    @OptionalReturn
+    @Collaborator
     public Country getCountry() {
         return country;
     }

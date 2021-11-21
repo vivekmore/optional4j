@@ -20,7 +20,7 @@ import spoon.reflect.factory.Factory;
 import spoon.reflect.reference.*;
 
 @RequiredArgsConstructor
-public class CollaboratorBuilder {
+public class NullObjectBuilder {
 
     @Getter @Delegate private final Factory factory;
 

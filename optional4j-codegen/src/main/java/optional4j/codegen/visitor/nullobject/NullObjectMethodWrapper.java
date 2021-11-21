@@ -9,12 +9,16 @@ import static spoon.reflect.declaration.ModifierKind.*;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import optional4j.annotation.Mode;
 import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.processor.ProcessorProperties;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtReturn;
 import spoon.reflect.code.CtStatement;
-import spoon.reflect.declaration.*;
+import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.CtNamedElement;
+import spoon.reflect.declaration.CtParameter;
+import spoon.reflect.declaration.ModifierKind;
 import spoon.reflect.reference.CtTypeReference;
 
 @RequiredArgsConstructor
@@ -25,10 +29,37 @@ public class NullObjectMethodWrapper {
     private final ProcessorProperties processorProperties;
 
     public <T> CtMethod<T> wrapMethod(CtMethod<T> ctMethod) {
-        CtMethod<T> wrapper = doCreateNullObjectWrapperMethod(ctMethod);
+
+        CtMethod<T> wrapperMethod = doCreateNullObjectWrapperMethod(ctMethod);
+
         privatize(ctMethod);
-        wrapper.setBody(ofNullableMethodInvocation(wrapper, ctMethod));
-        return wrapper;
+
+        wrapperMethod.setBody(ofNullableMethodInvocation(wrapperMethod, ctMethod));
+
+        // @NonNull Optional<Address> getAddress(){}
+        addNonNullAnnotation(wrapperMethod, nullObjectBuilder.getFactory());
+        removeAnnotation(wrapperMethod, nullObjectBuilder.getFactory(), Mode.class);
+        removeAnnotation(ctMethod, nullObjectBuilder.getFactory(), Mode.class);
+
+        return wrapperMethod;
+    }
+
+    private <T> CtMethod<T> doCreateNullObjectWrapperMethod(CtMethod<T> ctMethod) {
+
+        // Address etAddress(){}
+        CtMethod<T> newMethod = ctMethod.clone();
+
+        // AbstractAddress
+        CtTypeReference<?> newReturnType = getNullObjectTypeReference(ctMethod);
+
+        // AbstractAddress getAddress(){}
+        changeMethodReturnTypeToNullObject(newMethod, newReturnType);
+
+        return newMethod;
+    }
+
+    private <T> CtTypeReference<?> getNullObjectTypeReference(CtMethod<T> ctMethod) {
+        return nullObjectBuilder.getNullObjectTypeReference(getReturnType(ctMethod));
     }
 
     /**
@@ -40,20 +71,6 @@ public class NullObjectMethodWrapper {
     private void changeMethodReturnTypeToNullObject(
             CtMethod ctMethod, CtTypeReference<?> newReturnType) {
         ctMethod.setType(newReturnType);
-    }
-
-    private <T> CtMethod<T> doCreateNullObjectWrapperMethod(CtMethod<T> ctMethod) {
-        CtMethod<T> newMethod = ctMethod.clone(); // getAddress(){}
-        CtTypeReference<?> newReturnType =
-                nullObjectBuilder.getNullObjectTypeReference(getReturnType(ctMethod));
-
-        changeMethodReturnTypeToNullObject(
-                newMethod, newReturnType); // Optional<Address> getAddress(){}
-
-        // @NonNull Optional<Address> getAddress(){}
-        addNonNullAnnotation(newMethod, nullObjectBuilder.getFactory());
-
-        return newMethod;
     }
 
     private <T> void privatize(CtMethod<T> ctMethod) {
@@ -96,6 +113,7 @@ public class NullObjectMethodWrapper {
                         + localVariable
                         + " = "
                         + delegateMethodName(ctMethod);
+
         return nullObjectBuilder
                 .createBlock()
                 .addStatement(

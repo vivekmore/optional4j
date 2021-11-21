@@ -1,9 +1,9 @@
 package optional4j.codegen.visitor;
 
 import static optional4j.codegen.CodeGenUtil.hasNonNullAnnotation;
+import static optional4j.codegen.CodeGenUtil.isValueType;
 import static optional4j.codegen.CodeGenUtil.printProcessing;
 import static optional4j.codegen.CodeGenUtil.returnsNullObjectType;
-import static optional4j.codegen.CodeGenUtil.returnsOptionalType;
 import static optional4j.support.ModeValue.PESSIMISTIC;
 
 import java.util.Set;
@@ -65,7 +65,7 @@ public class NullableVisitor extends CtAbstractVisitor {
             return;
         }
 
-        if (returnsOptionalType(ctMethod) || PESSIMISTIC.equals(processorProperties.getMode())) {
+        if (isValueType(ctMethod) || PESSIMISTIC.equals(processorProperties.getMode())) {
             ctMethod.accept(
                     new ValueTypeVisitor(
                             processorClass, environment, valueTypeBuilder, processorProperties));

@@ -65,7 +65,7 @@ public class CodeGenUtil {
         return Nonnull::equals;
     }
 
-    public static <T> boolean returnsOptionalType(CtMethod<T> ctMethod) {
+    public static <T> boolean isValueType(CtMethod<T> ctMethod) {
         return getReturnType(ctMethod).hasAnnotation(ValueType.class);
     }
 

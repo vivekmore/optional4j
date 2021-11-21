@@ -1,6 +1,10 @@
 package optional4j.test.model;
 
+import static optional4j.support.ModeValue.PESSIMISTIC;
+
 import optional4j.annotation.Collaborator;
+import optional4j.annotation.Mode;
+import optional4j.annotation.OptionalReturn;
 import optional4j.annotation.ValueType;
 import optional4j.spec.Optional;
 
@@ -29,8 +33,14 @@ public class Address {
     public Address() {}
 
     @Collaborator
+    @Mode(PESSIMISTIC)
     public Country getCountry() {
         return country;
+    }
+
+    @OptionalReturn
+    public Optional<Country> dummyGetCountry() {
+        return null;
     }
 
     public Integer getZipcode() {

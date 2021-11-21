@@ -1,6 +1,9 @@
 package optional4j.test.model;
 
+import static optional4j.support.ModeValue.PESSIMISTIC;
+
 import javax.annotation.Nullable;
+import optional4j.annotation.Mode;
 import optional4j.annotation.ValueType;
 
 @ValueType
@@ -15,6 +18,7 @@ public class AlphaCode2 {
     }
 
     @Nullable
+    @Mode(PESSIMISTIC)
     public Year getYear() {
         return this.year;
     }

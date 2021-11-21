@@ -15,6 +15,7 @@ import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
 import optional4j.codegen.processor.ProcessorProperties;
 import optional4j.codegen.visitor.nullobject.CollaboratorVisitor;
+import optional4j.spec.Optional;
 import spoon.compiler.Environment;
 import spoon.processing.AnnotationProcessor;
 import spoon.reflect.declaration.*;
@@ -110,6 +111,12 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
             return;
         }
 
+        if (ctMethod.getType().getQualifiedName().startsWith(Optional.class.getName())) {
+            removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), OptionalReturn.class);
+            removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Nullable.class);
+            return;
+        }
+
         if (isOptionalReturn(ctMethod)) { // @OptionalReturn
             removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), OptionalReturn.class);
         } else { // Check nullity compatibility
@@ -122,12 +129,10 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
                 return;
             }
 
-            if (returnsOptionalType(ctMethod)) {
+            if (isValueType(ctMethod)) {
                 removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Nullable.class);
-            } else {
-                if (isOptimisticMode(ctMethod, processorProperties)) {
-                    return;
-                }
+            } else if (isOptimisticMode(ctMethod, processorProperties)) {
+                return;
             }
         }
 

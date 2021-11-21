@@ -1,18 +1,20 @@
 package optional4j.codegen.visitor.valuetype;
 
 import static java.util.stream.Collectors.joining;
-import static optional4j.codegen.CodeGenUtil.addNonNullAnnotation;
-import static optional4j.codegen.CodeGenUtil.isOptimisticMode;
+import static optional4j.codegen.CodeGenUtil.*;
 import static spoon.reflect.declaration.ModifierKind.*;
 
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import optional4j.annotation.Mode;
 import optional4j.codegen.CodeGenUtil;
 import optional4j.codegen.builder.ValueTypeBuilder;
 import optional4j.codegen.processor.ProcessorProperties;
 import optional4j.spec.Optional;
+import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtReturn;
+import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.declaration.CtParameter;
@@ -27,22 +29,29 @@ public class OptionalMethodWrapper {
     private final ProcessorProperties processorProperties;
 
     public <T> CtMethod<T> wrapMethod(CtMethod<T> ctMethod) {
-        CtMethod<T> wrapper = doCreateOptionalWrapperMethod(ctMethod);
+
+        CtMethod<T> wrapperMethod = doCreateOptionalWrapperMethod(ctMethod);
+
         privatize(ctMethod);
-        wrapper.setBody(ofNullableMethodInvocation(ctMethod));
-        return wrapper;
+
+        wrapperMethod.setBody(ofNullableMethodInvocation(ctMethod));
+
+        // @NonNull Optional<Address> getAddress(){}
+        addNonNullAnnotation(wrapperMethod, valueTypeBuilder.getFactory());
+        removeAnnotation(wrapperMethod, valueTypeBuilder.getFactory(), Mode.class);
+        removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Mode.class);
+
+        return wrapperMethod;
     }
 
     private <T> CtMethod<T> doCreateOptionalWrapperMethod(CtMethod<T> ctMethod) {
 
-        // getAddress(){}
+        // Address getAddress(){}
         CtMethod<T> newMethod = ctMethod.clone();
 
         // Optional<Address> getAddress(){}
         changeMethodReturnTypeToPoptional(newMethod);
 
-        // @NonNull Optional<Address> getAddress(){}
-        addNonNullAnnotation(newMethod, valueTypeBuilder.getFactory());
         return newMethod;
     }
 
@@ -57,21 +66,48 @@ public class OptionalMethodWrapper {
         }
     }
 
-    private <T> CtReturn<?> ofNullableMethodInvocation(CtMethod<T> ctMethod) {
+    private <T> CtStatement ofNullableMethodInvocation(CtMethod<T> ctMethod) {
 
+        if (isOptimisticMode(ctMethod, processorProperties)) {
+            return ifNullStatement(ctMethod);
+        }
+
+        return ofNullableMethodInvocationExpression(ctMethod);
+    }
+
+    private <T> CtReturn<?> ofNullableMethodInvocationExpression(CtMethod<T> ctMethod) {
+        return createReturn("Optional.ofNullable(" + delegateMethodName(ctMethod) + ")");
+    }
+
+    private CtBlock<?> ifNullStatement(CtMethod<?> ctMethod) {
+
+        String localVariable = "toReturn$$";
+
+        String declareLocalVariableStatement =
+                ctMethod.getType().getSimpleName()
+                        + " "
+                        + localVariable
+                        + " = "
+                        + delegateMethodName(ctMethod);
+
+        return valueTypeBuilder
+                .createBlock()
+                .addStatement(
+                        valueTypeBuilder.createCodeSnippetStatement(declareLocalVariableStatement))
+                .addStatement(
+                        createReturn(
+                                localVariable
+                                        + " != null? "
+                                        + localVariable
+                                        + ": Optional.empty()"));
+    }
+
+    private <T> CtReturn<?> createReturn(String toReturn) {
         return valueTypeBuilder
                 .getFactory()
                 .createReturn()
-                // todo: fix getReturnStatement to be able to make it optimistic
                 .setReturnedExpression(
-                        valueTypeBuilder
-                                .getFactory()
-                                .createCodeSnippetExpression(
-                                        ofNullableMethodInvocationExpression(ctMethod)));
-    }
-
-    private <T> String ofNullableMethodInvocationExpression(CtMethod<T> ctMethod) {
-        return "Optional.ofNullable(" + delegateMethodName(ctMethod) + ")";
+                        valueTypeBuilder.getFactory().createCodeSnippetExpression(toReturn));
     }
 
     private String delegateMethodName(CtMethod<?> ctMethod) {
@@ -100,25 +136,5 @@ public class OptionalMethodWrapper {
 
     private CtTypeReference<Optional<?>> poptionalOf(CtMethod<?> ctMethod) {
         return valueTypeBuilder.createOptionalOf(CodeGenUtil.getReturnTypeRef(ctMethod));
-    }
-
-    private String getReturnStatement(CtReturn<?> returnStatement, CtMethod<?> ctMethod) {
-
-        if (isOptimisticMode(ctMethod, processorProperties)) {
-            return ifNullStatement(returnStatement);
-        }
-
-        return poptionalOfNullableStatement(returnStatement);
-    }
-
-    private String poptionalOfNullableStatement(CtReturn<?> returnStatement) {
-        return "return Optional.ofNullable(" + returnStatement.getReturnedExpression() + ")";
-    }
-
-    private String ifNullStatement(CtReturn<?> returnStatement) {
-        return "return ("
-                + returnStatement.getReturnedExpression()
-                + ") == null? Optional.empty(): "
-                + returnStatement.getReturnedExpression();
     }
 }

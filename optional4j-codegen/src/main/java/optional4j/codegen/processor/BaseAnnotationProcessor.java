@@ -1,11 +1,12 @@
 package optional4j.codegen.processor;
 
-import static optional4j.codegen.CodeGenUtil.printProcessing;
+import static optional4j.codegen.CodegenUtil.printProcessing;
 import static optional4j.support.ModeValue.OPTIMISTIC;
 import static optional4j.support.NullityValue.NON_NULL;
 
 import java.lang.annotation.Annotation;
 import lombok.Setter;
+import optional4j.codegen.CodegenProperties;
 import optional4j.support.ModeValue;
 import optional4j.support.NullityValue;
 import spoon.processing.AbstractAnnotationProcessor;
@@ -29,25 +30,25 @@ public abstract class BaseAnnotationProcessor<A extends Annotation, E extends Ct
 
     @Property Boolean enhancedSyntax;
 
-    ProcessorProperties processorProperties;
+    CodegenProperties codegenProperties;
 
     @Override
     public boolean shoudBeConsumed(CtAnnotation<? extends Annotation> annotation) {
         return false;
     }
 
-    protected ProcessorProperties getProperties() {
-        if (processorProperties == null) {
+    protected CodegenProperties getProperties() {
+        if (codegenProperties == null) {
             initProperties();
         }
-        return processorProperties;
+        return codegenProperties;
     }
 
     private void initProperties() {
-        setProcessorProperties(
-                new ProcessorProperties(
+        setCodegenProperties(
+                new CodegenProperties(
                         getNullity(), getMode(), isNullityEnabled(), isEnhancedSyntax()));
-        printProcessing(getEnvironment(), processorProperties.toString());
+        printProcessing(getEnvironment(), codegenProperties.toString());
     }
 
     private NullityValue getNullity() {

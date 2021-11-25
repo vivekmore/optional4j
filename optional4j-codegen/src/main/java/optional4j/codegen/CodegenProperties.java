@@ -1,4 +1,4 @@
-package optional4j.codegen.processor;
+package optional4j.codegen;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -10,7 +10,7 @@ import optional4j.support.NullityValue;
 @RequiredArgsConstructor
 @Getter
 @ToString
-public class ProcessorProperties {
+public class CodegenProperties {
 
     @NonNull private final NullityValue nullity;
 

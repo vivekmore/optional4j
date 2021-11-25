@@ -1,6 +1,6 @@
 package optional4j.codegen.visitor.valuetype;
 
-import static optional4j.codegen.CodeGenUtil.*;
+import static optional4j.codegen.CodegenUtil.*;
 import static optional4j.support.NullityValue.NULLABLE;
 
 import java.util.Set;
@@ -11,9 +11,9 @@ import optional4j.annotation.Collaborator;
 import optional4j.annotation.Mode;
 import optional4j.annotation.OptionalReturn;
 import optional4j.annotation.ValueType;
+import optional4j.codegen.CodegenProperties;
 import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
-import optional4j.codegen.processor.ProcessorProperties;
 import optional4j.codegen.visitor.nullobject.CollaboratorVisitor;
 import optional4j.spec.Optional;
 import spoon.compiler.Environment;
@@ -30,7 +30,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
 
     private final ValueTypeBuilder valueTypeBuilder;
 
-    private final ProcessorProperties processorProperties;
+    private final CodegenProperties codegenProperties;
 
     @Override
     public <T> void visitCtInterface(CtInterface<T> tCtInterface) {
@@ -53,11 +53,11 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
 
     private <T> void visitJsr305Methods(CtType<T> ctType) {
 
-        if (!processorProperties.isNullityEnabled()) {
+        if (!codegenProperties.isNullityEnabled()) {
             return;
         }
 
-        if (NULLABLE == getNullness(ctType, processorProperties)) {
+        if (NULLABLE == getNullness(ctType, codegenProperties)) {
             visitCtMethods(ctType.getMethods());
             return;
         }
@@ -79,7 +79,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
 
         printProcessing(environment, ctClass);
 
-        if (processorProperties.isEnhancedSyntax()) {
+        if (codegenProperties.isEnhancedSyntax()) {
             implementEnhancedOptionalType(ctClass);
         }
         implementSomething(ctClass);
@@ -107,7 +107,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
                             environment,
                             new NullObjectBuilder(valueTypeBuilder.getFactory()),
                             valueTypeBuilder,
-                            processorProperties));
+                            codegenProperties));
             return;
         }
 
@@ -121,7 +121,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
             removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), OptionalReturn.class);
         } else { // Check nullity compatibility
 
-            if (!processorProperties.isNullityEnabled()) {
+            if (!codegenProperties.isNullityEnabled()) {
                 return;
             }
 
@@ -131,14 +131,14 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
 
             if (isValueType(ctMethod)) {
                 removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Nullable.class);
-            } else if (isOptimisticMode(ctMethod, processorProperties)) {
+            } else if (isOptimisticMode(ctMethod, codegenProperties)) {
                 return;
             }
         }
 
         ctMethod.getDeclaringType()
                 .addMethod(
-                        new OptionalMethodWrapper(valueTypeBuilder, processorProperties)
+                        new OptionalMethodWrapper(valueTypeBuilder, codegenProperties)
                                 .wrapMethod(ctMethod));
     }
 

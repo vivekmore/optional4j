@@ -3,15 +3,15 @@ package optional4j.codegen.visitor.nullobject;
 import static java.util.stream.Collectors.joining;
 import static optional4j.annotation.Collaborator.NULL_INSTANCE_FACTORY_METHOD_NAME;
 import static optional4j.annotation.Collaborator.NULL_OBJECT_FACTORY_METHOD_NAME;
-import static optional4j.codegen.CodeGenUtil.*;
+import static optional4j.codegen.CodegenUtil.*;
 import static spoon.reflect.declaration.ModifierKind.*;
 
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import optional4j.annotation.Mode;
+import optional4j.codegen.CodegenProperties;
 import optional4j.codegen.builder.NullObjectBuilder;
-import optional4j.codegen.processor.ProcessorProperties;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtReturn;
 import spoon.reflect.code.CtStatement;
@@ -26,7 +26,7 @@ public class NullObjectMethodWrapper {
 
     private final NullObjectBuilder nullObjectBuilder;
 
-    private final ProcessorProperties processorProperties;
+    private final CodegenProperties codegenProperties;
 
     public <T> CtMethod<T> wrapMethod(CtMethod<T> ctMethod) {
 
@@ -86,7 +86,7 @@ public class NullObjectMethodWrapper {
 
     private <T> CtStatement ofNullableMethodInvocation(CtMethod<?> wrapper, CtMethod<T> ctMethod) {
 
-        if (isOptimisticMode(ctMethod, processorProperties)) {
+        if (isOptimisticMode(ctMethod, codegenProperties)) {
             return ifNullStatement(wrapper.getType().getSimpleName(), ctMethod);
         }
 

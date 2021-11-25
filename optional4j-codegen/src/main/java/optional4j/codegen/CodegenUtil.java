@@ -16,7 +16,6 @@ import optional4j.annotation.Collaborator;
 import optional4j.annotation.Mode;
 import optional4j.annotation.OptionalReturn;
 import optional4j.annotation.ValueType;
-import optional4j.codegen.processor.ProcessorProperties;
 import optional4j.support.ModeValue;
 import optional4j.support.NullityValue;
 import spoon.compiler.Environment;
@@ -26,7 +25,7 @@ import spoon.reflect.declaration.*;
 import spoon.reflect.factory.Factory;
 import spoon.reflect.reference.CtTypeReference;
 
-public class CodeGenUtil {
+public class CodegenUtil {
 
     private static final String NonNull = "javax.annotation.NonNull";
     private static final String Nonnull = "javax.annotation.Nonnull";
@@ -148,7 +147,7 @@ public class CodeGenUtil {
     }
 
     public static NullityValue getNullness(
-            CtElement ctElement, ProcessorProperties processorProperties) {
+            CtElement ctElement, CodegenProperties codegenProperties) {
 
         Nullable localNullable = ctElement.getAnnotation((Nullable.class));
         if (localNullable != null) {
@@ -160,10 +159,10 @@ public class CodeGenUtil {
             return NON_NULL;
         }
 
-        return processorProperties.getNullity();
+        return codegenProperties.getNullity();
     }
 
-    public static ModeValue getMode(CtMethod<?> ctMethod, ProcessorProperties processorProperties) {
+    public static ModeValue getMode(CtMethod<?> ctMethod, CodegenProperties codegenProperties) {
 
         Mode mode = ctMethod.getAnnotation((Mode.class));
         if (mode != null) {
@@ -175,11 +174,11 @@ public class CodeGenUtil {
             return mode.value();
         }
 
-        return processorProperties.getMode();
+        return codegenProperties.getMode();
     }
 
     public static <T> boolean isOptimisticMode(
-            CtMethod<T> ctMethod, ProcessorProperties processorProperties) {
-        return getMode(ctMethod, processorProperties) == OPTIMISTIC;
+            CtMethod<T> ctMethod, CodegenProperties codegenProperties) {
+        return getMode(ctMethod, codegenProperties) == OPTIMISTIC;
     }
 }

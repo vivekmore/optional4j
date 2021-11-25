@@ -2,8 +2,8 @@ package optional4j.codegen.visitor.nullobject;
 
 import static optional4j.annotation.Collaborator.NULL_OBJ_INTERFACE_POSTFIX;
 import static optional4j.annotation.Collaborator.NULL_OBJ_INTERFACE_PREFIX;
-import static optional4j.codegen.CodeGenUtil.*;
-import static optional4j.codegen.CodeGenUtil.removeAnnotation;
+import static optional4j.codegen.CodegenUtil.*;
+import static optional4j.codegen.CodegenUtil.removeAnnotation;
 import static optional4j.support.NullityValue.NULLABLE;
 
 import java.util.Collection;
@@ -13,10 +13,10 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import optional4j.annotation.Collaborator;
-import optional4j.codegen.CodeGenUtil;
+import optional4j.codegen.CodegenProperties;
+import optional4j.codegen.CodegenUtil;
 import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
-import optional4j.codegen.processor.ProcessorProperties;
 import optional4j.codegen.visitor.valuetype.ValueTypeVisitor;
 import optional4j.spec.Optional;
 import spoon.compiler.Environment;
@@ -45,7 +45,7 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
 
     private final ValueTypeBuilder valueTypeBuilder;
 
-    private final ProcessorProperties processorProperties;
+    private final CodegenProperties codegenProperties;
 
     @Override
     public <T> void visitCtClass(CtClass<T> ctClass) {
@@ -89,10 +89,10 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
         addOverrideAnnotationToMethods(ctClass);
 
         // Add Generated annotations
-        CodeGenUtil.addGeneratedAnnotation(ctClass, nullObjectBuilder.getFactory(), processorClass);
-        CodeGenUtil.addGeneratedAnnotation(
+        CodegenUtil.addGeneratedAnnotation(ctClass, nullObjectBuilder.getFactory(), processorClass);
+        CodegenUtil.addGeneratedAnnotation(
                 nullObjectType, nullObjectBuilder.getFactory(), processorClass);
-        CodeGenUtil.addGeneratedAnnotation(
+        CodegenUtil.addGeneratedAnnotation(
                 nullClass, nullObjectBuilder.getFactory(), processorClass);
 
         // Generate classes
@@ -101,7 +101,7 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
     }
 
     public <T> void visitJsr305Methods(CtClass<T> ctClass) {
-        if (NULLABLE == getNullness(ctClass, processorProperties)) {
+        if (NULLABLE == getNullness(ctClass, codegenProperties)) {
             Set<CtMethod<?>> methods = ctClass.getMethods();
             visitCtMethods(methods);
         } else {
@@ -126,20 +126,17 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
         if (isValueType(ctMethod) && !returnsNullObjectType(ctMethod)) {
             ctMethod.accept(
                     new ValueTypeVisitor(
-                            processorClass, environment, valueTypeBuilder, processorProperties));
+                            processorClass, environment, valueTypeBuilder, codegenProperties));
             return;
         }
 
         if (!returnsNullObjectType(ctMethod)) {
-            if (isOptimisticMode(ctMethod, processorProperties)) {
+            if (isOptimisticMode(ctMethod, codegenProperties)) {
                 return;
             } else {
                 ctMethod.accept(
                         new ValueTypeVisitor(
-                                processorClass,
-                                environment,
-                                valueTypeBuilder,
-                                processorProperties));
+                                processorClass, environment, valueTypeBuilder, codegenProperties));
             }
         } else {
 
@@ -147,7 +144,7 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
             removeAnnotation(ctMethod, nullObjectBuilder.getFactory(), Collaborator.class);
 
             CtMethod<T> wrapperMethod =
-                    new NullObjectMethodWrapper(nullObjectBuilder, processorProperties)
+                    new NullObjectMethodWrapper(nullObjectBuilder, codegenProperties)
                             .wrapMethod(ctMethod);
 
             CtType<?> declaringType = ctMethod.getDeclaringType();

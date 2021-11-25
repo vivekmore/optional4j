@@ -1,16 +1,16 @@
 package optional4j.codegen.visitor.valuetype;
 
 import static java.util.stream.Collectors.joining;
-import static optional4j.codegen.CodeGenUtil.*;
+import static optional4j.codegen.CodegenUtil.*;
 import static spoon.reflect.declaration.ModifierKind.*;
 
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import optional4j.annotation.Mode;
-import optional4j.codegen.CodeGenUtil;
+import optional4j.codegen.CodegenProperties;
+import optional4j.codegen.CodegenUtil;
 import optional4j.codegen.builder.ValueTypeBuilder;
-import optional4j.codegen.processor.ProcessorProperties;
 import optional4j.spec.Optional;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtReturn;
@@ -26,7 +26,7 @@ public class OptionalMethodWrapper {
 
     private final ValueTypeBuilder valueTypeBuilder;
 
-    private final ProcessorProperties processorProperties;
+    private final CodegenProperties codegenProperties;
 
     public <T> CtMethod<T> wrapMethod(CtMethod<T> ctMethod) {
 
@@ -68,7 +68,7 @@ public class OptionalMethodWrapper {
 
     private <T> CtStatement ofNullableMethodInvocation(CtMethod<T> ctMethod) {
 
-        if (isOptimisticMode(ctMethod, processorProperties)) {
+        if (isOptimisticMode(ctMethod, codegenProperties)) {
             return ifNullStatement(ctMethod);
         }
 
@@ -135,6 +135,6 @@ public class OptionalMethodWrapper {
     }
 
     private CtTypeReference<Optional<?>> poptionalOf(CtMethod<?> ctMethod) {
-        return valueTypeBuilder.createOptionalOf(CodeGenUtil.getReturnTypeRef(ctMethod));
+        return valueTypeBuilder.createOptionalOf(CodegenUtil.getReturnTypeRef(ctMethod));
     }
 }

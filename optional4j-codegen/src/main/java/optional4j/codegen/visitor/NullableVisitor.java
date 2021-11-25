@@ -1,16 +1,16 @@
 package optional4j.codegen.visitor;
 
-import static optional4j.codegen.CodeGenUtil.hasNonNullAnnotation;
-import static optional4j.codegen.CodeGenUtil.isValueType;
-import static optional4j.codegen.CodeGenUtil.printProcessing;
-import static optional4j.codegen.CodeGenUtil.returnsNullObjectType;
+import static optional4j.codegen.CodegenUtil.hasNonNullAnnotation;
+import static optional4j.codegen.CodegenUtil.isValueType;
+import static optional4j.codegen.CodegenUtil.printProcessing;
+import static optional4j.codegen.CodegenUtil.returnsNullObjectType;
 import static optional4j.support.ModeValue.PESSIMISTIC;
 
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import optional4j.codegen.CodegenProperties;
 import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
-import optional4j.codegen.processor.ProcessorProperties;
 import optional4j.codegen.visitor.nullobject.CollaboratorVisitor;
 import optional4j.codegen.visitor.valuetype.ValueTypeVisitor;
 import spoon.compiler.Environment;
@@ -30,7 +30,7 @@ public class NullableVisitor extends CtAbstractVisitor {
 
     private final ValueTypeBuilder valueTypeBuilder;
 
-    private final ProcessorProperties processorProperties;
+    private final CodegenProperties codegenProperties;
 
     @Override
     public <T> void visitCtClass(CtClass<T> ctClass) {
@@ -44,7 +44,7 @@ public class NullableVisitor extends CtAbstractVisitor {
     @Override
     public <T> void visitCtMethod(CtMethod<T> ctMethod) {
 
-        if (!processorProperties.isNullityEnabled()) {
+        if (!codegenProperties.isNullityEnabled()) {
             return;
         }
 
@@ -61,14 +61,14 @@ public class NullableVisitor extends CtAbstractVisitor {
                             environment,
                             nullObjectBuilder,
                             valueTypeBuilder,
-                            processorProperties));
+                            codegenProperties));
             return;
         }
 
-        if (isValueType(ctMethod) || PESSIMISTIC.equals(processorProperties.getMode())) {
+        if (isValueType(ctMethod) || PESSIMISTIC.equals(codegenProperties.getMode())) {
             ctMethod.accept(
                     new ValueTypeVisitor(
-                            processorClass, environment, valueTypeBuilder, processorProperties));
+                            processorClass, environment, valueTypeBuilder, codegenProperties));
             return;
         }
 

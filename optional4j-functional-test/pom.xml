@@ -65,6 +65,8 @@
                         <processor>optional4j.codegen.processor.OptionalReturnProcessor</processor>
                         <processor>optional4j.codegen.processor.CollaboratorProcessor</processor>
                         <processor>optional4j.codegen.processor.NullableProcessor</processor>
+                        <processor>optional4j.codegen.processor.NullSafeProcessor</processor>
+                        <processor>optional4j.codegen.processor.NullAssertProcessor</processor>
                     </processors>
                 </configuration>
             </plugin>

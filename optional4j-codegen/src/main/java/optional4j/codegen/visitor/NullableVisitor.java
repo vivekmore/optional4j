@@ -65,7 +65,8 @@ public class NullableVisitor extends CtAbstractVisitor {
             return;
         }
 
-        if (isValueType(ctMethod) || PESSIMISTIC.equals(codegenProperties.getMode())) {
+        if (isValueType(ctMethod, valueTypeBuilder.getFactory())
+                || PESSIMISTIC.equals(codegenProperties.getMode())) {
             ctMethod.accept(
                     new ValueTypeVisitor(
                             processorClass, environment, valueTypeBuilder, codegenProperties));

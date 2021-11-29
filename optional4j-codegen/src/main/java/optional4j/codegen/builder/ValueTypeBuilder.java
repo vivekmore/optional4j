@@ -62,7 +62,7 @@ public class ValueTypeBuilder {
     }
 
     public void implementNothing(CtClass<?> ctClass, CtClass<?> aClass) {
-        CtTypeReference<Present<?>> nothingOf = createNothingOf(aClass);
+        CtTypeReference<Absent<?>> nothingOf = createNothingOf(aClass);
         if (nothingOf.isInterface()) {
             ctClass.addSuperInterface(nothingOf);
         } else if (nothingOf.isClass()) {
@@ -76,8 +76,8 @@ public class ValueTypeBuilder {
         return something;
     }
 
-    public CtTypeReference<Present<?>> createNothingOf(CtClass<?> ctClass) {
-        CtTypeReference<Present<?>> something = getFactory().createCtTypeReference(Absent.class);
+    public CtTypeReference<Absent<?>> createNothingOf(CtClass<?> ctClass) {
+        CtTypeReference<Absent<?>> something = getFactory().createCtTypeReference(Absent.class);
         something.addActualTypeArgument(ctClass.getReference());
         return something;
     }

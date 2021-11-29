@@ -16,6 +16,7 @@ import optional4j.annotation.Collaborator;
 import optional4j.annotation.Mode;
 import optional4j.annotation.OptionalReturn;
 import optional4j.annotation.ValueType;
+import optional4j.spec.Present;
 import optional4j.support.ModeValue;
 import optional4j.support.NullityValue;
 import spoon.compiler.Environment;
@@ -64,8 +65,10 @@ public class CodegenUtil {
         return Nonnull::equals;
     }
 
-    public static <T> boolean isValueType(CtMethod<T> ctMethod) {
-        return getReturnType(ctMethod).hasAnnotation(ValueType.class);
+    public static <T> boolean isValueType(CtMethod<T> ctMethod, Factory factory) {
+        CtType<?> returnType = getReturnType(ctMethod);
+        return returnType.hasAnnotation(ValueType.class)
+                || returnType.isSubtypeOf(factory.createCtTypeReference(Present.class));
     }
 
     /**

@@ -123,7 +123,8 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
             return;
         }
 
-        if (isValueType(ctMethod) && !returnsNullObjectType(ctMethod)) {
+        if (isValueType(ctMethod, nullObjectBuilder.getFactory())
+                && !returnsNullObjectType(ctMethod)) {
             ctMethod.accept(
                     new ValueTypeVisitor(
                             processorClass, environment, valueTypeBuilder, codegenProperties));

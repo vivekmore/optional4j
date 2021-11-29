@@ -1,21 +1,23 @@
 package optional4j.codegen.processor;
 
-import optional4j.annotation.ValueType;
+import optional4j.annotation.NullSafe;
+import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
-import optional4j.codegen.visitor.valuetype.ValueTypeVisitor;
+import optional4j.codegen.visitor.nullsafe.NullSafeVisitor;
 import spoon.reflect.declaration.CtElement;
 
-public class ValueTypeProcessor extends BaseAnnotationProcessor<ValueType, CtElement> {
+public class NullSafeProcessor extends BaseAnnotationProcessor<NullSafe, CtElement> {
 
     @Override
-    public void process(ValueType valueType, CtElement ctElement) {
+    public void process(NullSafe nullSafe, CtElement ctElement) {
 
         getEnvironment().setAutoImports(true);
 
         ctElement.accept(
-                new ValueTypeVisitor(
+                new NullSafeVisitor(
                         this.getClass(),
                         getEnvironment(),
+                        new NullObjectBuilder(getFactory()),
                         new ValueTypeBuilder(getFactory()),
                         getProperties()));
     }

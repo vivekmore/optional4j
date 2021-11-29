@@ -129,7 +129,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
                 return;
             }
 
-            if (isValueType(ctMethod)) {
+            if (isValueType(ctMethod, valueTypeBuilder.getFactory())) {
                 removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Nullable.class);
             } else if (isOptimisticMode(ctMethod, codegenProperties)) {
                 return;
@@ -147,6 +147,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
         removeAnnotation(tCtType, valueTypeBuilder.getFactory(), Nullable.class);
         removeAnnotation(tCtType, valueTypeBuilder.getFactory(), NonNull.class);
         removeAnnotation(tCtType, valueTypeBuilder.getFactory(), Mode.class);
+        removeAnnotation(tCtType, valueTypeBuilder.getFactory(), ValueType.class);
     }
 
     private <T> void implementEnhancedOptionalType(CtClass<T> ctClass) {

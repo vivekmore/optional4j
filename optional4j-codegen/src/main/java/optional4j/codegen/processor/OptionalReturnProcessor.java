@@ -9,6 +9,9 @@ public class OptionalReturnProcessor extends BaseAnnotationProcessor<OptionalRet
 
     @Override
     public void process(OptionalReturn optionalReturn, CtElement ctElement) {
+
+        getEnvironment().setAutoImports(true);
+
         ctElement.accept(
                 new ValueTypeVisitor(
                         this.getClass(),

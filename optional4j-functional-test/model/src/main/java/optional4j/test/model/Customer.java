@@ -29,7 +29,7 @@ public class Customer {
         return this.address;
     }
 
-    public void nullSafeTest() {
+    public Integer nullSafeTest() {
 
         @NullSafe
         Integer value =
@@ -40,6 +40,8 @@ public class Customer {
                         .getCodePlain()
                         .getYearPlain()
                         .getValue();
+
+        return value;
     }
 
     public void nullAssertTest() {
@@ -55,9 +57,11 @@ public class Customer {
                         .getValue();
     }
 
-    public void nullSafeTest2() {
+    public Address nullSafeTest2() {
 
         @NullSafe Address address = new Customer().getAddressPlain();
+
+        return address;
     }
 
     public void nullAssertTest2() {
@@ -65,9 +69,11 @@ public class Customer {
         @NullAssert Address address = new Customer().getAddressPlain();
     }
 
-    public void nullSafeTest3() {
+    public Customer nullSafeTest3() {
 
         @NullSafe Customer customer = doGetCustomer();
+
+        return customer;
     }
 
     public void nullAssertTest3() {
@@ -75,9 +81,11 @@ public class Customer {
         @NullAssert Customer customer = doGetCustomer();
     }
 
-    public void nullSafeTest4() {
+    public Address nullSafeTest4() {
 
         @NullSafe Address address = doGetCustomer().getAddressPlain();
+
+        return address;
     }
 
     public void nullAssertTest4() {
@@ -85,9 +93,11 @@ public class Customer {
         @NullAssert Address address = doGetCustomer().getAddressPlain();
     }
 
-    public void nullSafeTest5() {
+    public Customer nullSafeTest5() {
 
         @NullSafe Customer customer = doGetCustomerStatically();
+
+        return customer;
     }
 
     public void nullAssertTest5() {
@@ -95,14 +105,32 @@ public class Customer {
         @NullAssert Customer customer = doGetCustomerStatically();
     }
 
-    public void nullSafeTest6() {
+    public Address nullSafeTest6() {
 
         @NullSafe Address address = doGetCustomerStatically().getAddressPlain();
+
+        return address;
+    }
+
+    public Address nullSafeTest7() {
+
+        @NullSafe Address address = new Customer(new Address(new Country())).getAddressPlain();
+
+        return address;
     }
 
     public void nullAssertTest6() {
 
         @NullAssert Address address = doGetCustomerStatically().getAddressPlain();
+    }
+
+    public Address nullAssertTest7() {
+
+        @NullAssert
+        Address address =
+                new optional4j.test.model.Customer(new Address(new Country())).getAddressPlain();
+
+        return address;
     }
 
     private Customer doGetCustomer() {

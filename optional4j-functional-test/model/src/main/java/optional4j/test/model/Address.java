@@ -13,7 +13,9 @@ public class Address {
 
     private Country country;
 
-    private Integer zipcode;
+    private Integer zipcode = 0;
+
+    private Street street;
 
     public Address(Country country) {
         this.country = country;
@@ -32,10 +34,13 @@ public class Address {
 
     public Address() {}
 
-    @Collaborator
-    @Mode(PESSIMISTIC)
+    @OptionalReturn
     public Country getCountry() {
         return country;
+    }
+
+    public void setCountry(@Collaborator Country country) {
+        this.country = country;
     }
 
     @OptionalReturn
@@ -47,15 +52,21 @@ public class Address {
         return zipcode;
     }
 
-    public void setCountry(@Collaborator Country country) {
-        this.country = country;
+    public void setZipcode(Integer zipcode) {
+        this.zipcode = zipcode;
     }
 
     public Country getCountryPlain() {
         return this.country;
     }
 
-    public void setZipcode(Integer zipcode) {
-        this.zipcode = zipcode;
+    @Collaborator
+    @Mode(PESSIMISTIC)
+    public Street getStreet() {
+        return street;
+    }
+
+    public void setStreet(Street street) {
+        this.street = street;
     }
 }

@@ -3,9 +3,38 @@ package optional4j.test.model;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import optional4j.spec.Optional;
 import org.junit.Test;
 
 public class CustomerTest {
+
+    @Test
+    public void addressIsOptional() {
+
+        // given
+        Customer customer = new Customer();
+
+        // when
+        Optional<Address> address = customer.getAddress();
+
+        // then
+        assertThat(Address.class.isAssignableFrom(address.getClass())).isFalse();
+        assertThat(Optional.class.isAssignableFrom(address.getClass())).isTrue();
+    }
+
+    @Test
+    public void name() {
+
+        // given
+        Customer customer = new Customer();
+
+        // when
+        Optional<Address> address = customer.getAddress();
+
+        // then
+        assertThat(Address.class.isAssignableFrom(address.getClass())).isFalse();
+        assertThat(Optional.class.isAssignableFrom(address.getClass())).isTrue();
+    }
 
     @Test
     public void nullAssertTest() {

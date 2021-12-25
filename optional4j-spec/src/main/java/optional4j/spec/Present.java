@@ -47,7 +47,7 @@ public interface Present<T> extends Optional<T> {
 
     @Override
     default <U> Optional<U> map(Function<? super T, ? extends U> mapper) {
-        return Optional.ofNullable((Optional<U>) mapper.apply(this.get()));
+        return Optional.ofNullable(mapper.apply(this.get()));
     }
 
     @Override

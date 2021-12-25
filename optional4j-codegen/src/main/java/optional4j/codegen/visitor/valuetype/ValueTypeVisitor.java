@@ -1,6 +1,16 @@
 package optional4j.codegen.visitor.valuetype;
 
-import static optional4j.codegen.CodegenUtil.*;
+import static optional4j.codegen.CodegenUtil.addGeneratedAnnotation;
+import static optional4j.codegen.CodegenUtil.getNullableMethods;
+import static optional4j.codegen.CodegenUtil.getNullness;
+import static optional4j.codegen.CodegenUtil.hasNonNullAnnotation;
+import static optional4j.codegen.CodegenUtil.isOptimisticMode;
+import static optional4j.codegen.CodegenUtil.isOptionalReturn;
+import static optional4j.codegen.CodegenUtil.isValueType;
+import static optional4j.codegen.CodegenUtil.isVoidReturn;
+import static optional4j.codegen.CodegenUtil.printProcessing;
+import static optional4j.codegen.CodegenUtil.removeAnnotation;
+import static optional4j.codegen.CodegenUtil.returnsNullObjectType;
 import static optional4j.support.NullityValue.NULLABLE;
 
 import java.util.Set;
@@ -18,7 +28,10 @@ import optional4j.codegen.visitor.nullobject.CollaboratorVisitor;
 import optional4j.spec.Optional;
 import spoon.compiler.Environment;
 import spoon.processing.AnnotationProcessor;
-import spoon.reflect.declaration.*;
+import spoon.reflect.declaration.CtClass;
+import spoon.reflect.declaration.CtInterface;
+import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.CtType;
 import spoon.reflect.visitor.CtAbstractVisitor;
 
 @RequiredArgsConstructor
@@ -117,9 +130,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
             return;
         }
 
-        if (isOptionalReturn(ctMethod)) { // @OptionalReturn
-            removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), OptionalReturn.class);
-        } else { // Check nullity compatibility
+        if (!isOptionalReturn(ctMethod)) { // @OptionalReturn
 
             if (!codegenProperties.isNullityEnabled()) {
                 return;
@@ -128,13 +139,16 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
             if (hasNonNullAnnotation(ctMethod)) { // @NonNull
                 return;
             }
+        }
 
-            if (isValueType(ctMethod, valueTypeBuilder.getFactory())) {
-                removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Nullable.class);
-            } else if (isOptimisticMode(ctMethod, codegenProperties)) {
+        if (!isValueType(ctMethod, valueTypeBuilder.getFactory())) {
+            if (isOptimisticMode(ctMethod, codegenProperties)) {
                 return;
             }
         }
+
+        removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), OptionalReturn.class);
+        removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Nullable.class);
 
         ctMethod.getDeclaringType()
                 .addMethod(

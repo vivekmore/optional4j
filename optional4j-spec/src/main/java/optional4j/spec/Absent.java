@@ -39,7 +39,7 @@ public interface Absent<T> extends Optional<T> {
     }
 
     @Override
-    default java.util.Optional toJavaUtil() {
+    default java.util.Optional<T> toJavaUtil() {
         return java.util.Optional.empty();
     }
 
@@ -84,8 +84,7 @@ public interface Absent<T> extends Optional<T> {
     }
 
     @Override
-    default <R extends Optional<R>> Optional<R> flatMap(
-            Function<? super T, ? extends Optional<R>> mapper) {
+    default <R> Optional<R> flatMap(Function<? super T, Optional<R>> mapper) {
         return (Optional<R>) this;
     }
 

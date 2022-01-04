@@ -29,7 +29,7 @@ public interface Optional<T> {
     }
 
     @NonNull
-    java.util.Optional toJavaUtil();
+    java.util.Optional<T> toJavaUtil();
 
     boolean isEmpty();
 
@@ -52,7 +52,7 @@ public interface Optional<T> {
     T orNull();
 
     @NonNull
-    <R extends Optional<R>> Optional<R> flatMap(Function<? super T, ? extends Optional<R>> mapper);
+    <R> Optional<R> flatMap(Function<? super T, Optional<R>> mapper);
 
     <R extends NullableObject> R map(Function<? super T, R> mapper, Supplier<R> ifEmpty);
 

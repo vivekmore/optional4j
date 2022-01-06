@@ -14,13 +14,13 @@ public interface Optional<T> {
     }
 
     @NonNull
-    static <T> Optional<T> of(@NonNull T value) {
-        return value != null ? Present.of(value) : Absent.nothing();
+    static <T> Optional<T> ofNullable(@Nullable Optional<T> value) {
+        return value != null ? value : Absent.nothing();
     }
 
     @NonNull
-    static <T> Optional<T> ofNullable(@Nullable Optional<T> value) {
-        return value != null ? value : Absent.nothing();
+    static <T> Optional<T> of(@NonNull T value) {
+        return Present.of(value);
     }
 
     @NonNull

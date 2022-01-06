@@ -9,7 +9,7 @@ import optional4j.annotation.ValueType;
 import optional4j.spec.Optional;
 
 @ValueType
-public class Address {
+public class Address implements CountryProvider {
 
     private Country country;
 

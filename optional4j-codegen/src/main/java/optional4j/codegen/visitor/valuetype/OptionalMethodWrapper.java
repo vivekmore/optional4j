@@ -130,7 +130,7 @@ public class OptionalMethodWrapper {
      *
      * @param ctMethod
      */
-    private void changeMethodReturnTypeToPoptional(CtMethod ctMethod) {
+    public void changeMethodReturnTypeToPoptional(CtMethod ctMethod) {
         ctMethod.setType(poptionalOf(ctMethod));
     }
 

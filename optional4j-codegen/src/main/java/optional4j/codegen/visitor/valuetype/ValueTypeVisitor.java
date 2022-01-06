@@ -150,10 +150,13 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
         removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), OptionalReturn.class);
         removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Nullable.class);
 
-        ctMethod.getDeclaringType()
-                .addMethod(
-                        new OptionalMethodWrapper(valueTypeBuilder, codegenProperties)
-                                .wrapMethod(ctMethod));
+        OptionalMethodWrapper wrapper =
+                new OptionalMethodWrapper(valueTypeBuilder, codegenProperties);
+        if (ctMethod.getBody() == null) {
+            wrapper.changeMethodReturnTypeToPoptional(ctMethod);
+            return;
+        }
+        ctMethod.getDeclaringType().addMethod(wrapper.wrapMethod(ctMethod));
     }
 
     private <T> void addGeneratedAnnotations(CtType<T> tCtType) {

@@ -3,10 +3,10 @@ package optional4j.test.model;
 import javax.annotation.Nullable;
 import optional4j.annotation.NullAssert;
 import optional4j.annotation.NullSafe;
-import optional4j.annotation.ValueType;
+import optional4j.annotation.Optional4J;
 
-@ValueType
-public class Customer {
+@Optional4J
+public class Customer implements AddressProvider {
 
     private Address address;
 
@@ -31,30 +31,33 @@ public class Customer {
 
     public Integer nullSafeTest() {
 
-        @NullSafe
-        Integer value =
-                new Customer()
-                        .getAddressPlain()
-                        .getCountryPlain()
-                        .getIsoCodePlain()
-                        .getCodePlain()
-                        .getYearPlain()
-                        .getValue();
-
-        return value;
+        //        @NullSafe
+        //        Integer value =
+        //                new Customer()
+        //                        .getAddressPlain()
+        //                        .getCountryPlain()
+        //                        .getIsoCodePlain()
+        //                        .getCodePlain()
+        //                        .getYearPlain()
+        //                        .getValue()
+        //                        .orElse(0);
+        //
+        //        return value;
+        return 0;
     }
 
     public void nullAssertTest() {
 
-        @NullAssert
-        Integer value =
-                new Customer()
-                        .getAddressPlain()
-                        .getCountryPlain()
-                        .getIsoCodePlain()
-                        .getCodePlain()
-                        .getYearPlain()
-                        .getValue();
+        //        @NullAssert
+        //        Integer value =
+        //                new Customer()
+        //                        .getAddressPlain()
+        //                        .getCountryPlain()
+        //                        .getIsoCodePlain()
+        //                        .getCodePlain()
+        //                        .getYearPlain()
+        //                        .getValue()
+        //                        .orElse(0);
     }
 
     public Address nullSafeTest2() {

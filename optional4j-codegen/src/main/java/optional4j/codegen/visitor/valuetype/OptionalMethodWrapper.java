@@ -5,7 +5,6 @@ import static optional4j.codegen.CodegenUtil.*;
 import static spoon.reflect.declaration.ModifierKind.*;
 
 import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import optional4j.annotation.Mode;
 import optional4j.codegen.CodegenProperties;
@@ -18,7 +17,6 @@ import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtNamedElement;
 import spoon.reflect.declaration.CtParameter;
-import spoon.reflect.declaration.ModifierKind;
 import spoon.reflect.reference.CtTypeReference;
 
 @RequiredArgsConstructor
@@ -119,10 +117,10 @@ public class OptionalMethodWrapper {
     }
 
     private <T> void makeMethodPrivate(CtMethod<T> ctMethod) {
-        Set<ModifierKind> modifiers = ctMethod.getModifiers();
-        modifiers.removeAll(Set.of(PRIVATE, PROTECTED, PUBLIC));
-        modifiers.add(PRIVATE);
-        ctMethod.setModifiers(modifiers);
+        //        Set<ModifierKind> modifiers = ctMethod.getModifiers();
+        //        modifiers.removeAll(Set.of(PRIVATE, PROTECTED, PUBLIC));
+        //        modifiers.add(PRIVATE);
+        //        ctMethod.setModifiers(modifiers);
     }
 
     /**

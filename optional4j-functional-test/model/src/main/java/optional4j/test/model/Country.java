@@ -1,9 +1,9 @@
 package optional4j.test.model;
 
 import javax.annotation.Nullable;
-import optional4j.annotation.ValueType;
+import optional4j.annotation.Optional4J;
 
-@ValueType
+@Optional4J
 public class Country {
 
     private IsoCode isoCode;

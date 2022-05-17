@@ -144,14 +144,17 @@ public class CollaboratorVisitor extends CtAbstractVisitor {
             removeAnnotation(ctMethod, nullObjectBuilder.getFactory(), Nullable.class);
             removeAnnotation(ctMethod, nullObjectBuilder.getFactory(), Collaborator.class);
 
-            CtMethod<T> wrapperMethod =
-                    new NullObjectMethodWrapper(nullObjectBuilder, codegenProperties)
-                            .wrapMethod(ctMethod);
+            NullObjectMethodWrapper wrapper =
+                    new NullObjectMethodWrapper(nullObjectBuilder, codegenProperties);
+            if (ctMethod.getBody() == null) {
+                wrapper.changeMethodReturnTypeToNullObject(ctMethod);
+                return;
+            }
+
+            CtMethod<T> wrapperMethod = wrapper.wrapMethod(ctMethod);
 
             CtType<?> declaringType = ctMethod.getDeclaringType();
-
             declaringType.accept(this);
-
             declaringType.addMethod(wrapperMethod);
         }
     }

@@ -19,8 +19,7 @@ import javax.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import optional4j.annotation.Collaborator;
 import optional4j.annotation.Mode;
-import optional4j.annotation.OptionalReturn;
-import optional4j.annotation.ValueType;
+import optional4j.annotation.Optional4J;
 import optional4j.codegen.CodegenProperties;
 import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
@@ -52,7 +51,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
             return;
         }
 
-        ValueType valueType = tCtInterface.getAnnotation((ValueType.class));
+        Optional4J valueType = tCtInterface.getAnnotation((Optional4J.class));
         if (valueType == null) {
             return;
         }
@@ -85,7 +84,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
             return;
         }
 
-        ValueType valueType = ctClass.getAnnotation((ValueType.class));
+        Optional4J valueType = ctClass.getAnnotation((Optional4J.class));
         if (valueType == null) {
             return;
         }
@@ -125,12 +124,12 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
         }
 
         if (ctMethod.getType().getQualifiedName().startsWith(Optional.class.getName())) {
-            removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), OptionalReturn.class);
+            removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Optional4J.class);
             removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Nullable.class);
             return;
         }
 
-        if (!isOptionalReturn(ctMethod)) { // @OptionalReturn
+        if (!isOptionalReturn(ctMethod)) { // @Optional4J
 
             if (!codegenProperties.isNullityEnabled()) {
                 return;
@@ -147,7 +146,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
             }
         }
 
-        removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), OptionalReturn.class);
+        removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Optional4J.class);
         removeAnnotation(ctMethod, valueTypeBuilder.getFactory(), Nullable.class);
 
         OptionalMethodWrapper wrapper =
@@ -164,7 +163,7 @@ public class ValueTypeVisitor extends CtAbstractVisitor {
         removeAnnotation(tCtType, valueTypeBuilder.getFactory(), Nullable.class);
         removeAnnotation(tCtType, valueTypeBuilder.getFactory(), NonNull.class);
         removeAnnotation(tCtType, valueTypeBuilder.getFactory(), Mode.class);
-        removeAnnotation(tCtType, valueTypeBuilder.getFactory(), ValueType.class);
+        removeAnnotation(tCtType, valueTypeBuilder.getFactory(), Optional4J.class);
     }
 
     private <T> void implementEnhancedOptionalType(CtClass<T> ctClass) {

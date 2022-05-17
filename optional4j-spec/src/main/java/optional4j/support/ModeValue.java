@@ -8,14 +8,14 @@ import java.util.Set;
 public enum ModeValue {
 
     /**
-     * Apply null safety wherever possible. Not just to {@link optional4j.annotation.ValueType}
+     * Apply null safety wherever possible. Not just to {@link optional4j.annotation.Optional4J}
      * annotated types
      */
     PESSIMISTIC,
 
     /**
      * A performant mode which applies the null safety features only to {@link
-     * optional4j.annotation.ValueType} annotated types
+     * optional4j.annotation.Optional4J} annotated types
      */
     OPTIMISTIC;
 

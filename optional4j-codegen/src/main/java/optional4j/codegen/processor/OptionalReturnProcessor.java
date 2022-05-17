@@ -1,14 +1,14 @@
 package optional4j.codegen.processor;
 
-import optional4j.annotation.OptionalReturn;
+import optional4j.annotation.Optional4J;
 import optional4j.codegen.builder.ValueTypeBuilder;
 import optional4j.codegen.visitor.valuetype.ValueTypeVisitor;
 import spoon.reflect.declaration.CtElement;
 
-public class OptionalReturnProcessor extends BaseAnnotationProcessor<OptionalReturn, CtElement> {
+public class OptionalReturnProcessor extends BaseAnnotationProcessor<Optional4J, CtElement> {
 
     @Override
-    public void process(OptionalReturn optionalReturn, CtElement ctElement) {
+    public void process(Optional4J optionalReturn, CtElement ctElement) {
 
         getEnvironment().setAutoImports(true);
 

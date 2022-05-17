@@ -73,6 +73,15 @@ public class NullObjectMethodWrapper {
         ctMethod.setType(newReturnType);
     }
 
+    /**
+     * Changes the method return type to FooNullObject
+     *
+     * @param ctMethod
+     */
+    public void changeMethodReturnTypeToNullObject(CtMethod ctMethod) {
+        changeMethodReturnTypeToNullObject(ctMethod, getNullObjectTypeReference(ctMethod));
+    }
+
     private <T> void privatize(CtMethod<T> ctMethod) {
 
         // do_getAddress

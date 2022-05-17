@@ -14,8 +14,7 @@ import javax.annotation.Nullable;
 import javax.annotation.processing.Generated;
 import optional4j.annotation.Collaborator;
 import optional4j.annotation.Mode;
-import optional4j.annotation.OptionalReturn;
-import optional4j.annotation.ValueType;
+import optional4j.annotation.Optional4J;
 import optional4j.spec.Present;
 import optional4j.support.ModeValue;
 import optional4j.support.NullityValue;
@@ -36,6 +35,11 @@ public class CodegenUtil {
     public static <T> void printProcessing(Environment environment, CtType<T> ctType) {
         environment.reportProgressMessage(
                 CLASS_TAB + "Processing class: " + ctType.getSimpleName());
+    }
+
+    public static <T> void printProcessing(Environment environment, CtElement ctElement) {
+        environment.reportProgressMessage(
+                CLASS_TAB + "Processing element: " + ctElement.toString());
     }
 
     public static void printProcessing(Environment environment, String text) {
@@ -67,7 +71,7 @@ public class CodegenUtil {
 
     public static <T> boolean isValueType(CtMethod<T> ctMethod, Factory factory) {
         CtType<?> returnType = getReturnType(ctMethod);
-        return returnType.hasAnnotation(ValueType.class)
+        return returnType.hasAnnotation(Optional4J.class)
                 || returnType.isSubtypeOf(factory.createCtTypeReference(Present.class));
     }
 
@@ -84,7 +88,7 @@ public class CodegenUtil {
     }
 
     public static <T> boolean isOptionalReturn(CtMethod<T> ctMethod) {
-        return ctMethod.hasAnnotation(OptionalReturn.class);
+        return ctMethod.hasAnnotation(Optional4J.class);
     }
 
     /**

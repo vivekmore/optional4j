@@ -4,9 +4,9 @@ import static optional4j.support.ModeValue.PESSIMISTIC;
 
 import javax.annotation.Nullable;
 import optional4j.annotation.Mode;
-import optional4j.annotation.ValueType;
+import optional4j.annotation.Optional4J;
 
-@ValueType
+@Optional4J
 public class AlphaCode2 {
 
     private Year year;

@@ -4,12 +4,11 @@ import static optional4j.support.ModeValue.PESSIMISTIC;
 
 import optional4j.annotation.Collaborator;
 import optional4j.annotation.Mode;
-import optional4j.annotation.OptionalReturn;
-import optional4j.annotation.ValueType;
+import optional4j.annotation.Optional4J;
 import optional4j.spec.Optional;
 
-@ValueType
-public class Address implements CountryProvider {
+@Optional4J
+public class Address extends StreetProvider implements CountryProvider {
 
     private Country country;
 
@@ -34,7 +33,7 @@ public class Address implements CountryProvider {
 
     public Address() {}
 
-    @OptionalReturn
+    @Optional4J
     public Country getCountry() {
         return country;
     }
@@ -43,7 +42,7 @@ public class Address implements CountryProvider {
         this.country = country;
     }
 
-    @OptionalReturn
+    @Optional4J
     public Optional<Country> dummyGetCountry() {
         return null;
     }

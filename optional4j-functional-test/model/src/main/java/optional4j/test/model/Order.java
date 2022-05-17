@@ -1,10 +1,10 @@
 package optional4j.test.model;
 
 import javax.annotation.Nullable;
-import optional4j.annotation.ValueType;
+import optional4j.annotation.Optional4J;
 
-@ValueType
-public class Order {
+@Optional4J
+public class Order implements CustomerProvider {
 
     private Customer customer;
 

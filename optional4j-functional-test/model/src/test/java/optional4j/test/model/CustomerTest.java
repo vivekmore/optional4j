@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import optional4j.spec.Optional;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CustomerTest {
@@ -37,6 +38,7 @@ public class CustomerTest {
     }
 
     @Test
+    @Ignore
     public void nullAssertTest() {
 
         Customer customer = new Customer();
@@ -95,6 +97,7 @@ public class CustomerTest {
     }
 
     @Test
+    @Ignore
     public void nullSafeTest() {
 
         Customer customer = new Customer();

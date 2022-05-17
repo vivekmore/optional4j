@@ -1,5 +1,6 @@
 package optional4j.spec;
 
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -108,7 +109,9 @@ public interface Absent<T> extends Optional<T> {
         throw new NoSuchElementException("No value present");
     }
 
-    final class Null<T> implements Absent<T> {
+    final class Null<T> implements Absent<T>, Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         Null() {}
 
@@ -117,7 +120,7 @@ public interface Absent<T> extends Optional<T> {
         }
 
         public int hashCode() {
-            return 704073337;
+            return 0;
         }
 
         public String toString() {

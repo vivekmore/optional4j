@@ -1,7 +1,7 @@
 package optional4j.codegen.processor;
 
 import static optional4j.codegen.CodegenUtil.printProcessing;
-import static optional4j.support.ModeValue.OPTIMISTIC;
+import static optional4j.support.ModeValue.PESSIMISTIC;
 import static optional4j.support.NullityValue.NON_NULL;
 
 import java.lang.annotation.Annotation;
@@ -20,7 +20,7 @@ public abstract class BaseAnnotationProcessor<A extends Annotation, E extends Ct
 
     private static final boolean DEFAULT_NULLITY_ENABLED = true;
     private static final NullityValue DEFAULT_NULLITY = NON_NULL;
-    private static final ModeValue DEFAULT_MODE = OPTIMISTIC;
+    private static final ModeValue DEFAULT_MODE = PESSIMISTIC;
 
     @Property Boolean nullityEnabled;
 

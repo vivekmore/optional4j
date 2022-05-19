@@ -152,4 +152,14 @@ public class CustomerTest {
 
         assertThat(customer.nullSafeTest7()).isNotNull();
     }
+
+    @Test
+    public void nullSafeTest8() {
+
+        Customer customer = new Customer();
+
+        Year year = customer.nullSafeTest8();
+
+        assertThat(year).isNull();
+    }
 }

@@ -5,7 +5,7 @@ import static optional4j.codegen.CodegenUtil.removeAnnotation;
 
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
-import optional4j.annotation.NullSafe;
+import optional4j.annotation.Optional4J;
 import optional4j.codegen.CodegenProperties;
 import optional4j.codegen.builder.NullObjectBuilder;
 import optional4j.codegen.builder.ValueTypeBuilder;
@@ -49,7 +49,7 @@ public class NullSafeVisitor extends CtAbstractVisitor {
                 var.setAssignment(conditional);
                 localVariable.replace(var);
             } else {
-                removeAnnotation(localVariable, valueTypeBuilder.getFactory(), NullSafe.class);
+                removeAnnotation(localVariable, valueTypeBuilder.getFactory(), Optional4J.class);
             }
         }
     }

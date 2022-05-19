@@ -2,7 +2,6 @@ package optional4j.test.model;
 
 import javax.annotation.Nullable;
 import optional4j.annotation.NullAssert;
-import optional4j.annotation.NullSafe;
 import optional4j.annotation.Optional4J;
 
 @Optional4J
@@ -31,7 +30,7 @@ public class Customer implements AddressProvider {
 
     public Integer nullSafeTest() {
 
-        //        @NullSafe
+        //        @Optional4J
         //        Integer value =
         //                new Customer()
         //                        .getAddressPlain()
@@ -62,7 +61,7 @@ public class Customer implements AddressProvider {
 
     public Address nullSafeTest2() {
 
-        @NullSafe Address address = new Customer().getAddressPlain();
+        @Optional4J Address address = new Customer().getAddressPlain();
 
         return address;
     }
@@ -74,7 +73,7 @@ public class Customer implements AddressProvider {
 
     public Customer nullSafeTest3() {
 
-        @NullSafe Customer customer = doGetCustomer();
+        @Optional4J Customer customer = doGetCustomer();
 
         return customer;
     }
@@ -86,7 +85,7 @@ public class Customer implements AddressProvider {
 
     public Address nullSafeTest4() {
 
-        @NullSafe Address address = doGetCustomer().getAddressPlain();
+        @Optional4J Address address = doGetCustomer().getAddressPlain();
 
         return address;
     }
@@ -98,7 +97,7 @@ public class Customer implements AddressProvider {
 
     public Customer nullSafeTest5() {
 
-        @NullSafe Customer customer = doGetCustomerStatically();
+        @Optional4J Customer customer = doGetCustomerStatically();
 
         return customer;
     }
@@ -110,14 +109,14 @@ public class Customer implements AddressProvider {
 
     public Address nullSafeTest6() {
 
-        @NullSafe Address address = doGetCustomerStatically().getAddressPlain();
+        @Optional4J Address address = doGetCustomerStatically().getAddressPlain();
 
         return address;
     }
 
     public Address nullSafeTest7() {
 
-        @NullSafe Address address = new Customer(new Address(new Country())).getAddressPlain();
+        @Optional4J Address address = new Customer(new Address(new Country())).getAddressPlain();
 
         return address;
     }
@@ -134,6 +133,19 @@ public class Customer implements AddressProvider {
                 new optional4j.test.model.Customer(new Address(new Country())).getAddressPlain();
 
         return address;
+    }
+
+    public Year nullSafeTest8() {
+
+        @Optional4J
+        Year year =
+                new Customer()
+                        .getAddressPlain()
+                        .getCountryPlain()
+                        .getIsoCodePlain()
+                        .getCodePlain()
+                        .getYearPlain();
+        return year;
     }
 
     private Customer doGetCustomer() {

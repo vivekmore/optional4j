@@ -14,8 +14,8 @@ public interface Optional<T> {
     }
 
     @NonNull
-    static <T> Optional<T> ofNullable(@Nullable Optional<T> value) {
-        return value != null ? value : Absent.nothing();
+    static <T> Optional<T> ofNullable(Optional<T> value) {
+        return value != null ? value : empty();
     }
 
     @NonNull

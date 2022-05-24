@@ -18,10 +18,12 @@
     </modules>
 
     <properties>
-        <lombok.version>1.18.16</lombok.version>
-        <spoon.version>9.0.0</spoon.version>
-        <junit.version>4.13</junit.version>
         <jmh.version>1.21</jmh.version>
+        <junit.version>4.13</junit.version>
+        <lombok.version>1.18.16</lombok.version>
+        <maven.compiler.source>12</maven.compiler.source>
+        <maven.compiler.target>12</maven.compiler.target>
+        <spoon.version>9.0.0</spoon.version>
     </properties>
 
     <dependencyManagement>
